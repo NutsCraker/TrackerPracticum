@@ -188,7 +188,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var id = "header"
+        let id = "header"
         
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? ViewCategory
         view?.titleLabel.text = "\(visibleTrackerCategories[indexPath.row].nameCategory)"
@@ -227,8 +227,7 @@ extension TrackerViewController: TrackerCellDelegate {
     func uncompleteTracker(id: UUID, indexPath: IndexPath) {
         completedTracker.removeAll { trackerRecord in
             let sameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
-            return trackerRecord.id == id && sameDay
-            collectionView.reloadItems(at: [indexPath])
+            return trackerRecord.id == id && sameDay           
         }
     }
 }
