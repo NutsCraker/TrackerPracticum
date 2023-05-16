@@ -11,7 +11,7 @@ final class TrackerViewController: UIViewController {
     
     private let emptyImage = UIImageView()
     private let emptyLable = UILabel()
-    private let addTraker = UIButton()
+    private let newTracker = UIButton()
     private let header = UILabel()
     private let searchTextField  = TextField()
     private let datePicker = UIDatePicker()
@@ -48,18 +48,18 @@ extension TrackerViewController {
         
         searchTextField.setUpTextFieldOnTrackerView()
         
-        addTraker.addTarget(self, action: #selector(addTracker), for: .touchUpInside)
-        addTraker.setImage(UIImage(systemName: "plus"), for: .normal)
-        addTraker.sizeThatFits(CGSize(width: 19, height: 18))
-        addTraker.tintColor = .YPBlack
+        newTracker.addTarget(self, action: #selector(addTracker), for: .touchUpInside)
+        newTracker.setImage(UIImage(systemName: "plus"), for: .normal)
+        newTracker.sizeThatFits(CGSize(width: 19, height: 18))
+        newTracker.tintColor = .YPBlack
         
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
         datePicker.locale = Locale(identifier: "ru_Ru")
-        datePicker.addTarget(self, action: #selector(dateChanget), for: .valueChanged)
+        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         
         if visibleTrackerCategories.isEmpty {
-            let allUIElements = [emptyImage, emptyLable, header, searchTextField, datePicker, addTraker]
+            let allUIElements = [emptyImage, emptyLable, header, searchTextField, datePicker, newTracker]
             allUIElements.forEach({view.addSubview($0)})
             allUIElements.forEach({$0.translatesAutoresizingMaskIntoConstraints = false})
             emptyImage.image = UIImage(named: "emptyTracker")
@@ -73,8 +73,8 @@ extension TrackerViewController {
             header.tintColor = .YPBlack
             
             NSLayoutConstraint.activate([
-                addTraker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
-                addTraker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
+                newTracker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
+                newTracker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
                 emptyImage.topAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 366),
                 emptyImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
                 emptyLable.centerXAnchor.constraint(equalTo: emptyImage.centerXAnchor),
@@ -89,7 +89,7 @@ extension TrackerViewController {
                 searchTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 16*2)
             ])
         } else {
-            let allUIElements = [header, searchTextField, datePicker, collectionView, addTraker]
+            let allUIElements = [header, searchTextField, datePicker, collectionView, newTracker]
             allUIElements.forEach({view.addSubview($0)})
             allUIElements.forEach({$0.translatesAutoresizingMaskIntoConstraints = false})
             
@@ -98,8 +98,8 @@ extension TrackerViewController {
             header.tintColor = .YPBlack
             
             NSLayoutConstraint.activate([
-                addTraker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
-                addTraker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
+                newTracker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
+                newTracker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
                 header.leadingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
                 header.topAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 44),
                 datePicker.bottomAnchor.constraint(equalTo: searchTextField.topAnchor, constant: -11),
@@ -125,7 +125,7 @@ extension TrackerViewController {
     }
     
     @objc
-    private func dateChanget() {
+    private func dateChanged() {
         reloadVisibleCategories()
     }
     
@@ -134,7 +134,7 @@ extension TrackerViewController {
         let filterWeekDay = calendar.component(.weekday, from: datePicker.date)
         let filterText = (searchTextField.text ?? "").lowercased()
         visibleTrackerCategories = categories.map { category in
-            TrackerType(nameCategory: category.nameCategory, trakers: category.trakers.filter { tracker in
+            TrackerType(nameCategory: category.nameCategory, trackers: category.trackers.filter { tracker in
                 let textCondition = filterText.isEmpty || tracker.name.lowercased().contains(filterText)
                 let dateCondotion = tracker.schedule?.contains { weekDay in
                     weekDay.rawValue + 1 == filterWeekDay
@@ -158,12 +158,12 @@ extension TrackerViewController: UITextFieldDelegate {
 
 extension TrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return visibleTrackerCategories[0].trakers.count
+        return visibleTrackerCategories[0].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellCollection", for: indexPath) as? TrackerCell else { return UICollectionViewCell() }
-        let tracker = visibleTrackerCategories[0].trakers[indexPath.row]
+        let tracker = visibleTrackerCategories[0].trackers[indexPath.row]
         let isCompletedToday = isCompletedTrackerToday(id: tracker.id)
         let countDay =  completedTracker.filter { $0.id == tracker.id }.count
         if completedTracker.isEmpty {
@@ -173,10 +173,10 @@ extension TrackerViewController: UICollectionViewDataSource {
         }
         cell.configTrackerCellButtonUI(tracker: tracker, isCompleted: isCompletedToday, indexPath: indexPath)
         cell.delegate = self
-        cell.name.text = "\(visibleTrackerCategories[0].trakers[indexPath.row].name)"
-        cell.emoji.text = "\(visibleTrackerCategories[0].trakers[indexPath.row].emoji)"
-        cell.backView.backgroundColor = visibleTrackerCategories[0].trakers[indexPath.row].color
-        cell.buttonPlus.backgroundColor = visibleTrackerCategories[0].trakers[indexPath.row].color
+        cell.name.text = "\(visibleTrackerCategories[0].trackers[indexPath.row].name)"
+        cell.emoji.text = "\(visibleTrackerCategories[0].trackers[indexPath.row].emoji)"
+        cell.backView.backgroundColor = visibleTrackerCategories[0].trackers[indexPath.row].color
+        cell.buttonPlus.backgroundColor = visibleTrackerCategories[0].trackers[indexPath.row].color
         return cell
     }
     

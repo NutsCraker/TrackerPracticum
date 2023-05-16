@@ -19,13 +19,13 @@ final class Storage {
         if storageTrackerType.isEmpty {
          
             trackers.append(newTracker)
-            let newTrackerType = TrackerType(nameCategory: "Важное", trakers: trackers)
+            let newTrackerType = TrackerType(nameCategory: "Важное", trackers: trackers)
             storageTrackerType.append(newTrackerType)
         } else {
             storageTrackerType.removeLast()
 
             trackers.append(newTracker)
-            let newTrackerType = TrackerType(nameCategory: "Важное", trakers: trackers)
+            let newTrackerType = TrackerType(nameCategory: "Важное", trackers: trackers)
             storageTrackerType.append(newTrackerType)
         }
     }
