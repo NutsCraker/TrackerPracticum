@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CreateTrackerViewController: UIViewController {
+final class NewTrackerViewController: UIViewController {
     private let headerLabel = UILabel()
     private let habitButton = UIButton()
     private let unregularEventButton = UIButton()
@@ -18,27 +18,27 @@ final class CreateTrackerViewController: UIViewController {
     }
 }
 
-extension CreateTrackerViewController {
+extension NewTrackerViewController {
     func makeUI() {
-        view.backgroundColor = .YPWhiteDay
+        view.backgroundColor = .YPWhite
         
         let allUIElements = [headerLabel, habitButton, unregularEventButton]
         allUIElements.forEach({view.addSubview($0)})
         allUIElements.forEach({$0.translatesAutoresizingMaskIntoConstraints = false})
         
         headerLabel.text = "Создание трекера"
-        headerLabel.textColor = .YPBlackDay
+        headerLabel.textColor = .YPBlack
         headerLabel.font = UIFont.systemFont(ofSize: 16)
         
-        habitButton.backgroundColor = .YPBlackDay
+        habitButton.backgroundColor = .YPBlack
         habitButton.setTitle("Привычка", for: .normal)
-        habitButton.setTitleColor(.YPWhiteDay, for: .normal)
+        habitButton.setTitleColor(.YPWhite, for: .normal)
         habitButton.layer.cornerRadius = 16
         habitButton.addTarget(self, action: #selector(createHabit), for: .touchUpInside)
         
-        unregularEventButton.backgroundColor = .YPBlackDay
+        unregularEventButton.backgroundColor = .YPBlack
         unregularEventButton.setTitle("Нерегулярное событие", for: .normal)
-        unregularEventButton.setTitleColor(.YPWhiteDay, for: .normal)
+        unregularEventButton.setTitleColor(.YPWhite, for: .normal)
         unregularEventButton.layer.cornerRadius = 16
         
         NSLayoutConstraint.activate([
@@ -57,7 +57,7 @@ extension CreateTrackerViewController {
     
     @objc
     func createHabit() {
-        let createHabit = CreateHabitViewController()
+        let createHabit = HabitViewController()
         present(createHabit, animated: true)
     }
 }

@@ -15,7 +15,7 @@ protocol CreateCategoryDelegate: AnyObject {
     func createCategory (category: String)
 }
 
-final class CreateHabitViewController: UIViewController {
+final class HabitViewController: UIViewController {
     
     private let headerLabel = UILabel()
     private let cancelButton = UIButton()
@@ -25,32 +25,50 @@ final class CreateHabitViewController: UIViewController {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let tableForCreateHabit = UITableView()
+    private let tableForHabit = UITableView()
     private let dataForTable = ["Категория", "Расписание"]
-    static let shared = CreateHabitViewController()
+    static let shared = HabitViewController()
     private let storage = Storage.shared
-    private let createSchedule = CreateScheduleViewController.shared
+    private let createSchedule = ScheduleViewController.shared
     private let createCategory = CategoryViewController.shared
     private let emodji = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
-    private let colors: [UIColor] = [.ColorSet1, .ColorSet2, .ColorSet3, .ColorSet4, .ColorSet5, .ColorSet6, .ColorSet7, .ColorSet8, .ColorSet9, .ColorSet10, .ColorSet11, .ColorSet12, .ColorSet13, .ColorSet14, .ColorSet15, .ColorSet16, .ColorSet17, .ColorSet18]
+    private let colors: [UIColor] = [
+        .CS01,
+        .CS02,
+        .CS03,
+        .CS04,
+        .CS05,
+        .CS06,
+        .CS07,
+        .CS08,
+        .CS09,
+        .CS10,
+        .CS11,
+        .CS12,
+        .CS13,
+        .CS14,
+        .CS15,
+        .CS16,
+        .CS17,
+        .CS18]
     private var selectedColor: UIColor?
     private var selectedEmoji: String?
     private var category = ""
     private var visibleDay = ""
     private var nameHabit = ""
-    private var finalSchedule = [WeekDay]()
+    private var finalSchedule = [DayOfWeek]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableForCreateHabit.delegate = self
-        tableForCreateHabit.dataSource = self
+        tableForHabit.delegate = self
+        tableForHabit.dataSource = self
         collectionView.delegate = self
         collectionView.dataSource = self
         nameTextField.delegate = self
-        tableForCreateHabit.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableForCreateHabit.register(CreateHabitCell.self, forCellReuseIdentifier: "cellCustom")
+        tableForHabit.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableForHabit.register(HabitCell.self, forCellReuseIdentifier: "cellCustom")
         collectionView.register(EmojiCell.self, forCellWithReuseIdentifier: "emojiCell")
-        collectionView.register(SupplementaryViewEmojiColor.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(ViewEmoji.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         makeUI()
         createSchedule.delegate = self
         createCategory.delegate = self
@@ -59,12 +77,12 @@ final class CreateHabitViewController: UIViewController {
     }
 }
 
-extension CreateHabitViewController {
+extension HabitViewController {
     func makeUI() {
-        view.backgroundColor = .YPWhiteDay
+        view.backgroundColor = .YPWhite
         
         let uiElementOnGeneralView = [headerLabel, scrollView]
-        let uiElementsOnContentView = [nameTextField, cancelButton, createButton, tableForCreateHabit, collectionView]
+        let uiElementsOnContentView = [nameTextField, cancelButton, createButton, tableForHabit, collectionView]
         
         scrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,20 +94,20 @@ extension CreateHabitViewController {
         uiElementsOnContentView.forEach({contentView.addSubview($0)})
         uiElementsOnContentView.forEach({$0.translatesAutoresizingMaskIntoConstraints = false})
         
-        tableForCreateHabit.layer.masksToBounds = true
-        tableForCreateHabit.layer.cornerRadius = 10
-        tableForCreateHabit.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner]
+        tableForHabit.layer.masksToBounds = true
+        tableForHabit.layer.cornerRadius = 10
+        tableForHabit.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner]
         
         nameTextField.layer.cornerRadius = 10
         nameTextField.leftView = nil
-        nameTextField.layer.backgroundColor = UIColor.YPBackgroundDay.cgColor
-        nameTextField.textColor = .YPBlackDay
+        nameTextField.layer.backgroundColor = UIColor.YPBackground.cgColor
+        nameTextField.textColor = .YPBlack
         nameTextField.clearButtonMode = .whileEditing
         nameTextField.placeholder = "Введите название трекера"
         nameTextField.font = UIFont.systemFont(ofSize: 17)
         
         headerLabel.text = "Новая привычка"
-        headerLabel.textColor = .YPBlackDay
+        headerLabel.textColor = .YPBlack
         headerLabel.font = UIFont.systemFont(ofSize: 16)
         
         cancelButton.layer.borderWidth = 1
@@ -101,7 +119,7 @@ extension CreateHabitViewController {
         
         createButton.backgroundColor = .YPGray
         createButton.setTitle("Создать", for: .normal)
-        createButton.setTitleColor(.YPWhiteDay, for: .normal)
+        createButton.setTitleColor(.YPWhite, for: .normal)
         createButton.layer.cornerRadius = 16
         createButton.addTarget(self, action: #selector(addTracker), for: .touchUpInside)
         
@@ -124,11 +142,11 @@ extension CreateHabitViewController {
             nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             nameTextField.widthAnchor.constraint(equalToConstant: contentView.frame.width - 32),
             nameTextField.heightAnchor.constraint(equalToConstant: 75),
-            tableForCreateHabit.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            tableForCreateHabit.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 24),
-            tableForCreateHabit.widthAnchor.constraint(equalToConstant: 343),
-            tableForCreateHabit.heightAnchor.constraint(equalToConstant: 150),
-            collectionView.topAnchor.constraint(equalTo: tableForCreateHabit.bottomAnchor),
+            tableForHabit.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            tableForHabit.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 24),
+            tableForHabit.widthAnchor.constraint(equalToConstant: 343),
+            tableForHabit.heightAnchor.constraint(equalToConstant: 150),
+            collectionView.topAnchor.constraint(equalTo: tableForHabit.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -46),
@@ -181,7 +199,7 @@ extension CreateHabitViewController {
     }
 }
 
-extension CreateHabitViewController: UITableViewDataSource {
+extension HabitViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataForTable.count
@@ -191,7 +209,7 @@ extension CreateHabitViewController: UITableViewDataSource {
         if visibleDay.isEmpty && category.isEmpty {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             cell.textLabel?.text = dataForTable[indexPath.row]
-            cell.backgroundColor = .YPBackgroundDay
+            cell.backgroundColor = .YPBackground
             cell.accessoryType = .disclosureIndicator
             if indexPath.row == 0 {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -200,16 +218,16 @@ extension CreateHabitViewController: UITableViewDataSource {
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cellCustom", for: indexPath) as! CreateHabitCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cellCustom", for: indexPath) as! HabitCell
             cell.firstLabel.text = dataForTable[indexPath.row]
-            cell.backgroundColor = .YPBackgroundDay
+            cell.backgroundColor = .YPBackground
             cell.accessoryType = .disclosureIndicator
             if indexPath.row == 0 {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-                cell.secondaryLabel.text = category
+                cell.secondLabel.text = category
             } else {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-                cell.secondaryLabel.text = visibleDay
+                cell.secondLabel.text = visibleDay
             }
             return cell
         }
@@ -217,7 +235,7 @@ extension CreateHabitViewController: UITableViewDataSource {
 }
 
 
-extension CreateHabitViewController: UITableViewDelegate {
+extension HabitViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
@@ -232,34 +250,34 @@ extension CreateHabitViewController: UITableViewDelegate {
     }
 }
 
-extension CreateHabitViewController: CreateScheduleDelegate {
+extension HabitViewController: CreateScheduleDelegate {
     func createScheduleTracker(schedule: [String]) {
         visibleDay = schedule.joined(separator: ", ")
         for i in schedule {
             switch i {
-            case "Пн": finalSchedule.append(WeekDay.monday)
-            case "Вт": finalSchedule.append(WeekDay.tuesday)
-            case "Ср": finalSchedule.append(WeekDay.wednesday)
-            case "Чт": finalSchedule.append(WeekDay.thursday)
-            case "Пт": finalSchedule.append(WeekDay.friday)
-            case "Сб": finalSchedule.append(WeekDay.saturday)
-            case "Вс": finalSchedule.append(WeekDay.sunday)
+            case "Пн": finalSchedule.append(DayOfWeek.monday)
+            case "Вт": finalSchedule.append(DayOfWeek.tuesday)
+            case "Ср": finalSchedule.append(DayOfWeek.wednesday)
+            case "Чт": finalSchedule.append(DayOfWeek.thursday)
+            case "Пт": finalSchedule.append(DayOfWeek.friday)
+            case "Сб": finalSchedule.append(DayOfWeek.saturday)
+            case "Вс": finalSchedule.append(DayOfWeek.sunday)
             default: break
             }
         }
         
-        tableForCreateHabit.reloadData()
+        tableForHabit.reloadData()
     }
 }
 
-extension CreateHabitViewController: CreateCategoryDelegate {
+extension HabitViewController: CreateCategoryDelegate {
     func createCategory(category: String) {
         self.category = category
-        tableForCreateHabit.reloadData()
+        tableForHabit.reloadData()
     }
 }
 
-extension CreateHabitViewController: UITextFieldDelegate {
+extension HabitViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -272,7 +290,7 @@ extension CreateHabitViewController: UITextFieldDelegate {
     }
 }
 
-extension CreateHabitViewController: UICollectionViewDataSource {
+extension HabitViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
@@ -306,12 +324,12 @@ extension CreateHabitViewController: UICollectionViewDataSource {
         let id: String = "header"
         
         switch indexPath.section {
-        case 0: if let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryViewEmojiColor {
+        case 0: if let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? ViewEmoji {
             view.titleLabel.text = "Emoji"
             view.titleLabel.font = UIFont.boldSystemFont(ofSize: 19)
             return view
         }
-        case 1: if let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryViewEmojiColor {
+        case 1: if let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? ViewEmoji {
             view.titleLabel.text = "Цвет"
             view.titleLabel.font = UIFont.boldSystemFont(ofSize: 19)
             return view
@@ -322,7 +340,7 @@ extension CreateHabitViewController: UICollectionViewDataSource {
     }
 }
 
-extension CreateHabitViewController: UICollectionViewDelegateFlowLayout {
+extension HabitViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
@@ -332,7 +350,7 @@ extension CreateHabitViewController: UICollectionViewDelegateFlowLayout {
             selectedEmoji = cell.textLabel.text
         case 1: let cell = collectionView.cellForItem(at: indexPath)
             cell?.layer.borderWidth = 3
-            cell?.layer.borderColor = UIColor.YPWhiteDay.cgColor
+            cell?.layer.borderColor = UIColor.YPWhite.cgColor
             selectedColor = cell?.backgroundColor
         default: print("---------------------\(indexPath.section)")
         }
@@ -341,7 +359,7 @@ extension CreateHabitViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0: guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-            cell.backgroundColor = .YPWhiteDay
+            cell.backgroundColor = .YPWhite
             cell.layer.cornerRadius = 16
         case 1: let cell = collectionView.cellForItem(at: indexPath)
             cell?.layer.borderWidth = 0
