@@ -1,13 +1,13 @@
 //
-//  TrackerCell.swift
+//  EmojiCell.swift
 //  TrackerPracticum
 //
-//  Created by Alexander Farizanov on 09.05.2023.
+//  Created by Alexander Farizanov on 16.05.2023.
 //
 
 import UIKit
 
-final class TrackerCell: UICollectionViewCell {
+final class EmojiCell: UICollectionViewCell {
     let textLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -16,10 +16,9 @@ final class TrackerCell: UICollectionViewCell {
         contentView.addSubview(textLabel)
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         
-       
-       NSLayoutConstraint.activate([
-        textLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        textLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        NSLayoutConstraint.activate([
+            textLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            textLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
     
