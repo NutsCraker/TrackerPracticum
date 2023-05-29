@@ -7,12 +7,11 @@
 
 import UIKit
 
-class TrackersViewController: UIViewController {
-    
+final class TrackerViewController: UIViewController {
 
-    private var categories: [TrackerType] = [] //MockData.categories
-    private var completedTrackers: [TrackerRecord] = [] //трекеры, которые были «выполнены» в выбранную дату
-    private var visibleCategories: [TrackerType] = [] //отображается при поиске и/или изменении дня недели
+    private var categories: [TrackerCategory] = MockData.categories
+    private var completedTrackers: [TrackerRecord] = []
+    private var visibleCategories: [TrackerCategory] = []
     private var currentDate: Int?
     private var searchText: String = ""
     private var widthAnchor: NSLayoutConstraint?
@@ -44,9 +43,9 @@ class TrackersViewController: UIViewController {
     private lazy var searchTextField: UISearchTextField = {
         let searchTextField = UISearchTextField()
         searchTextField.placeholder = "Поиск"
-        searchTextField.textColor = .ypBlack
+        searchTextField.textColor = .YPBlack
         searchTextField.font = .systemFont(ofSize: 17)
-        searchTextField.backgroundColor = .findColor
+        searchTextField.backgroundColor = .YPGray
         searchTextField.layer.cornerRadius = 10
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
@@ -68,9 +67,9 @@ class TrackersViewController: UIViewController {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.register(TrackerCell.self,
-                                forCellWithReuseIdentifier: TrackerCell.identifier)
-        collectionView.register(ViewCategory.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ViewCategory.identifier)
+        collectionView.register(TrackersCollectionView.self,
+                                forCellWithReuseIdentifier: TrackersCollectionView.identifier)
+        collectionView.register(TrackersSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackersSupplementaryView.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -114,9 +113,9 @@ class TrackersViewController: UIViewController {
     }
     
     @objc func addTracker() {
-        let trackersVC = NewTrackerViewController()
-        trackersVC.delegate = self
-        present(trackersVC, animated: true)
+        let tracker = CreateTrackerViewController()
+        tracker.delegate = self
+        present(tracker, animated: true)
     }
     
     @objc private func cancelEditingButtonAction() {
@@ -187,7 +186,7 @@ class TrackersViewController: UIViewController {
                 }
             }
             if newTrackers.count > 0 {
-                let newCategory = TrackerCategory(name: category.name, trackers: newTrackers)
+                let newCategory = TrackerCategory(nameCategory: category.nameCategory, trackers: newTrackers)
                 newCategories.append(newCategory)
             }
         }
@@ -196,7 +195,7 @@ class TrackersViewController: UIViewController {
     }
 }
 
-extension TrackersViewController: UICollectionViewDataSource {
+extension TrackerViewController: UICollectionViewDataSource {
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -209,22 +208,22 @@ extension TrackersViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackersCollectionViewCell.identifier, for: indexPath) as? TrackersCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackersCollectionView.identifier, for: indexPath) as? TrackersCollectionView else { return UICollectionViewCell() }
         cell.delegate = self
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         let isCompleted = completedTrackers.contains(where: { record in
-            record.idTracker == tracker.id &&
+            record.id == tracker.id &&
             record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
         })
         let isEnabled = datePicker.date < Date() || Date().yearMonthDayComponents == datePicker.date.yearMonthDayComponents
         let completedCount = completedTrackers.filter({ record in
-            record.idTracker == tracker.id
+            record.id == tracker.id
         }).count
         cell.configure(
             tracker.id,
             name: tracker.name,
-            color: tracker.color ?? .ypBlue,
-            emoji: tracker.emoji ?? "",
+            color: tracker.color,
+            emoji: tracker.emoji,
             isCompleted: isCompleted,
             isEnabled: isEnabled,
             completedCount: completedCount
@@ -239,7 +238,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 }
 
-extension TrackersViewController: UICollectionViewDelegateFlowLayout {
+extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -281,7 +280,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         }
         
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? TrackersSupplementaryView else { return UICollectionReusableView() }
-        view.titleLabel.text = visibleCategories[indexPath.section].name
+        view.titleLabel.text = visibleCategories[indexPath.section].nameCategory
         return view
     }
     
@@ -297,22 +296,22 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TrackersViewController: CreateTrackerVCDelegate {
+extension TrackerViewController: CreateTrackerViewControllerDelegate {
     
     func createTracker(_ tracker: Tracker, categoryName: String) {
         var categoryToUpdate: TrackerCategory?
         var index: Int?
         
         for i in 0..<categories.count {
-            if categories[i].name == categoryName {
+            if categories[i].nameCategory == categoryName {
                 categoryToUpdate = categories[i]
                 index = i
             }
         }
         if categoryToUpdate == nil {
-            categories.append(TrackerCategory(name: categoryName, trackers: [tracker]))
+            categories.append(TrackerCategory(nameCategory: categoryName, trackers: [tracker]))
         } else {
-            let trackerCategory = TrackerCategory(name: categoryName, trackers: [tracker] + (categoryToUpdate?.trackers ?? []))
+            let trackerCategory = TrackerCategory(nameCategory: categoryName, trackers: [tracker] + (categoryToUpdate?.trackers ?? []))
             categories.remove(at: index ?? 0)
             categories.append(trackerCategory)
         }
@@ -322,7 +321,7 @@ extension TrackersViewController: CreateTrackerVCDelegate {
     }
 }
 
-extension TrackersViewController {
+extension TrackerViewController {
     
     @objc func textFieldChanged() {
         searchText = searchTextField.text ?? ""
@@ -331,22 +330,22 @@ extension TrackersViewController {
     }
 }
 
-extension TrackersViewController: TrackersCollectionViewCellDelegate {
+extension TrackerViewController: TrackersCollectionViewDelegate {
     
     func completedTracker(id: UUID) {
         if let index = completedTrackers.firstIndex(where: { record in
-            record.idTracker == id &&
+            record.id == id &&
             record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
         }) {
             completedTrackers.remove(at: index)
         } else {
-            completedTrackers.append(TrackerRecord(idTracker: id, date: datePicker.date))
+            completedTrackers.append(TrackerRecord(id: id, date: datePicker.date))
         }
         collectionView.reloadData()
     }
 }
 
-extension TrackersViewController: UITextFieldDelegate {
+extension TrackerViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         widthAnchor?.constant = 85

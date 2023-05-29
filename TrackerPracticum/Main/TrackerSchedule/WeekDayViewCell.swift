@@ -12,7 +12,7 @@ protocol WeekDayViewCellDelegate: AnyObject {
 }
 
 final class WeekDayViewCell: UITableViewCell {
-    public weak var delegate: WeekDayTableViewCellDelegate?
+    public weak var delegate: WeekDayViewCellDelegate?
     var weekDay: DayOfWeek?
     
     lazy var label: UILabel = {
@@ -34,7 +34,7 @@ final class WeekDayViewCell: UITableViewCell {
     static let identifier = "WeekDayTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: WeekDayTableViewCell.identifier)
+        super.init(style: .default, reuseIdentifier: WeekDayViewCell.identifier)
         setupView()
         setupLayout()
     }

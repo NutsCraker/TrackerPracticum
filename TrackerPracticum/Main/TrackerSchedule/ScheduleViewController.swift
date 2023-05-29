@@ -115,7 +115,7 @@ extension ScheduleViewController: UITableViewDelegate {
 
 extension ScheduleViewController: WeekDayViewCellDelegate {
     
-    func stateChanged(for day: WeekDay, isOn: Bool) {
+    func stateChanged(for day: DayOfWeek, isOn: Bool) {
         if isOn {
             schedule.append(day)
         } else {

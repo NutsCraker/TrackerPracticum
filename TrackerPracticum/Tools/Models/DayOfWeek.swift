@@ -7,6 +7,13 @@
 
 import Foundation
 
+extension Date {
+    var yearMonthDayComponents: DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day], from: self)
+    }
+}
+
+
 enum DayOfWeek: String, CaseIterable {
     case monday = "Понедельник"
     case tuesday = "Вторник"
