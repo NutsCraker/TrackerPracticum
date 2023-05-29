@@ -1,21 +1,21 @@
 //
-//  TrackerCell.swift
+//  TrackerCollectionView.swift
 //  TrackerPracticum
 //
-//  Created by Alexander Farizanov on 09.05.2023.
+//  Created by Alexander Farizanov on 29.05.2023.
 //
 
 import UIKit
 
-protocol TrackerCellDelegate: AnyObject {
+protocol TrackersCollectionViewDelegate: AnyObject {
     func completedTracker(id: UUID)
 }
 
-final class TrackerCell: UICollectionViewCell {
+final class TrackersCollectionView: UICollectionViewCell {
     
-    static let identifier = "TrackerCell"
+    static let identifier = "trackersCollectionViewCell"
     
-    public weak var delegate: TrackerCell?
+    public weak var delegate: TrackersCollectionViewDelegate?
     private var isCompletedToday: Bool = false
     private var trackerId: UUID? = nil
     private let limitNumberOfCharacters = 38

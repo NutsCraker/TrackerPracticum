@@ -9,7 +9,9 @@ import UIKit
 
 protocol WeekdayCellDelegate: AnyObject {
     func didToggleSwitchView(to isSelected: Bool, day: String)
+    func createSchedule(schedule: [DayOfWeek])
 }
+
 
 final class ScheduleViewController: UIViewController {
     

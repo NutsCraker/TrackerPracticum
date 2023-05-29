@@ -7,58 +7,88 @@
 
 import UIKit
 
+protocol NewTrackerViewControllerDelegate: AnyObject {
+    func createTracker(_ tracker: Tracker, categoryName: String)
+}
+
 final class NewTrackerViewController: UIViewController {
-    private let headerLabel = UILabel()
-    private let habitButton = UIButton()
-    private let unregularEventButton = UIButton()
+   
+    public weak var delegate: NewTrackerViewControllerDelegate?
+    
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.text = "Создание трекера"
+        label.font = .systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var createRegularEventButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Привычка", for: .normal)
+        button.backgroundColor = .YPBlack
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(regularEventButtonAction), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var createIrregularEventButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Нерегулярное событие", for: .normal)
+        button.backgroundColor = .YPBlack
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(irregularEventButtonAction), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeUI()
-    }
-}
-
-extension NewTrackerViewController {
-    func makeUI() {
-        view.backgroundColor = .YPWhite
-        
-        let allUIElements = [headerLabel, habitButton, unregularEventButton]
-        allUIElements.forEach({view.addSubview($0)})
-        allUIElements.forEach({$0.translatesAutoresizingMaskIntoConstraints = false})
-        
-        headerLabel.text = "Создание трекера"
-        headerLabel.textColor = .YPBlack
-        headerLabel.font = UIFont.systemFont(ofSize: 16)
-        
-        habitButton.backgroundColor = .YPBlack
-        habitButton.setTitle("Привычка", for: .normal)
-        habitButton.setTitleColor(.YPWhite, for: .normal)
-        habitButton.layer.cornerRadius = 16
-        habitButton.addTarget(self, action: #selector(createHabit), for: .touchUpInside)
-        
-        unregularEventButton.backgroundColor = .YPBlack
-        unregularEventButton.setTitle("Нерегулярное событие", for: .normal)
-        unregularEventButton.setTitleColor(.YPWhite, for: .normal)
-        unregularEventButton.layer.cornerRadius = 16
-        
-        NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
-            headerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            habitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            habitButton.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 295),
-            habitButton.widthAnchor.constraint(equalToConstant: 335),
-            habitButton.heightAnchor.constraint(equalToConstant: 60),
-            unregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16),
-            unregularEventButton.centerXAnchor.constraint(equalTo: habitButton.centerXAnchor),
-            unregularEventButton.widthAnchor.constraint(equalToConstant: 335),
-            unregularEventButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
+        view.backgroundColor = .white
+        addSubviews()
+        setupLayout()
     }
     
-    @objc
-    func createHabit() {
-        let createHabit = HabitViewController()
-        present(createHabit, animated: true)
+    @objc private func irregularEventButtonAction() {
+        let createRegularEventVC = NewTrackerViewController()
+        present(createRegularEventVC, animated: true)
+    }
+    
+   
+    
+    private func addSubviews() {
+        view.addSubview(label)
+        view.addSubview(createRegularEventButton)
+        view.addSubview(createIrregularEventButton)
+    }
+    
+    private func setupLayout() {
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
+            
+            createRegularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            createRegularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            createRegularEventButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 295),
+            createRegularEventButton.widthAnchor.constraint(equalToConstant: 335),
+            createRegularEventButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            createIrregularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            createIrregularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            createIrregularEventButton.topAnchor.constraint(equalTo: createRegularEventButton.bottomAnchor, constant: 16),
+            createIrregularEventButton.widthAnchor.constraint(equalToConstant: 335),
+            createIrregularEventButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
     }
 }
 
+extension NewTrackerViewController:  {
+    
+    func createTracker(_ tracker: Tracker, categoryName: String) {
+        delegate?.createTracker(tracker, categoryName: categoryName)
+        dismiss(animated: true)
+    }
+}
