@@ -41,7 +41,6 @@ class CreateTrackerViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(irregularEventButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        
         return button
     }()
     
@@ -53,15 +52,15 @@ class CreateTrackerViewController: UIViewController {
     }
     
     @objc private func irregularEventButtonAction() {
-        let createEvent = CreateEventViewController(.irregular)
-        createEvent.delegate = self
-        present(createEvent, animated: true)
+        let vc = CreateEventViewController(.irregular)
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     @objc private func regularEventButtonAction() {
-        let createEvent = CreateEventViewController(.regular)
-        createEvent.delegate = self
-        present(createEvent, animated: true)
+        let vc = CreateEventViewController(.regular)
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     private func addSubviews() {
@@ -94,6 +93,5 @@ extension CreateTrackerViewController: CreateEventViewControllerDelegate {
     
     func createTracker(_ tracker: Tracker, categoryName: String) {
         delegate?.createTracker(tracker, categoryName: categoryName)
-        dismiss(animated: true)
     }
 }
