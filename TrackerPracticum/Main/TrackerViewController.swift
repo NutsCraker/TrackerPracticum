@@ -325,6 +325,8 @@ extension TrackerViewController {
     
     @objc func textFieldChanged() {
         searchText = searchTextField.text ?? ""
+        imageView.image = searchText.isEmpty ? UIImage(named: "star") : UIImage(named: "notFound")
+        label.text = searchText.isEmpty ? "Что будем отслеживать?" : "Ничего не найдено"
         widthAnchor?.constant = 85
         updateCategories()
     }
