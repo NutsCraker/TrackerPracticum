@@ -11,17 +11,37 @@ protocol ScheduleViewControllerDelegate: AnyObject {
     func createSchedule(schedule: [DayOfWeek])
 }
 
-final class ScheduleViewController: UIViewController {
+class ScheduleViewController: UIViewController {
     
     public weak var delegate: ScheduleViewControllerDelegate?
     private var schedule: [DayOfWeek] = []
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .YPBlack
         label.text = "Расписание"
         label.font = .systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.backgroundColor = .YPWhite
+        scrollView.frame = view.bounds
+        scrollView.contentSize = contentSize
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private var contentSize: CGSize {
+        CGSize(width: view.frame.width, height: view.frame.height)
+    }
+    
+    private lazy var buttonBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private lazy var enterButton: UIButton = {
@@ -38,11 +58,11 @@ final class ScheduleViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         var width = view.frame.width - 16*2
-        var height = 7*75
+        var height = 75*7
         tableView.register(WeekDayViewCell.self, forCellReuseIdentifier: WeekDayViewCell.identifier)
         tableView.layer.cornerRadius = 16
         tableView.separatorColor = .YPGray
-        tableView.frame = CGRect(x: 16, y: 79, width: Int(width), height: height)
+        tableView.frame = CGRect(x: 16, y: 16, width: Int(width), height: Int(height))
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,8 +78,10 @@ final class ScheduleViewController: UIViewController {
     
     private func addSubviews() {
         view.addSubview(label)
-        view.addSubview(enterButton)
-        view.addSubview(tableView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(tableView)
+        scrollView.addSubview(buttonBackgroundView)
+        buttonBackgroundView.addSubview(enterButton)
     }
     
     private func setupLayout() {
@@ -67,9 +89,19 @@ final class ScheduleViewController: UIViewController {
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
             
-            enterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            scrollView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 30),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            buttonBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            buttonBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            buttonBackgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonBackgroundView.heightAnchor.constraint(equalToConstant: 80),
+            
+            enterButton.bottomAnchor.constraint(equalTo: buttonBackgroundView.bottomAnchor, constant: -10),
             enterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            enterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            enterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             enterButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
@@ -100,6 +132,7 @@ extension ScheduleViewController: UITableViewDataSource {
         } else {
             weekDayCell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
+        weekDayCell.selectionStyle = .none
         return weekDayCell
     }
 }
@@ -110,12 +143,15 @@ extension ScheduleViewController: UITableViewDelegate {
         return 75
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 extension ScheduleViewController: WeekDayViewCellDelegate {
     
     func stateChanged(for day: DayOfWeek, isOn: Bool) {
+        
         if isOn {
             schedule.append(day)
         } else {
@@ -125,5 +161,4 @@ extension ScheduleViewController: WeekDayViewCellDelegate {
         }
     }
 }
-
 

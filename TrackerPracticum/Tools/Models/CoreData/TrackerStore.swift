@@ -60,9 +60,8 @@ class TrackerStore {
         return Tracker(
             id: uuid,
             name: name,
-            color: color.color,
-            emoji: emoji,
-            schedule: schedule.compactMap { WeekDay(rawValue: $0) }
+            emoji: emoji, color: color.color,
+            schedule: schedule.compactMap {DayOfWeek(rawValue: $0) }
         )
     }
 }

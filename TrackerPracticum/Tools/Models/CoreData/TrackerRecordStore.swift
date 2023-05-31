@@ -34,7 +34,7 @@ class TrackerRecordStore {
     }
     
     func updateExistingTrackerRecord(_ trackerRecordCoreData: TrackerRecordCoreData, with record: TrackerRecord) {
-        trackerRecordCoreData.idTracker = record.id
+        trackerRecordCoreData.id = record.id
         trackerRecordCoreData.date = record.date
     }
     
@@ -52,7 +52,7 @@ class TrackerRecordStore {
             throw DatabaseError.someError
         }
         return TrackerRecord(
-            idT: id,
+            id: id,
             date: date
         )
     }

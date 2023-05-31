@@ -52,7 +52,7 @@ final class TrackerViewController: UIViewController {
         searchTextField.placeholder = "Поиск"
         searchTextField.textColor = .YPBlack
         searchTextField.font = .systemFont(ofSize: 17)
-        searchTextField.backgroundColor = .findColor
+        searchTextField.backgroundColor = .YPGray
         searchTextField.layer.cornerRadius = 10
         searchTextField.indent(size: 30)
         searchTextField.translatesAutoresizingMaskIntoConstraints = false

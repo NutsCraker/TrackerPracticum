@@ -83,7 +83,7 @@ class TrackerCategoryStore: NSObject {
         _ trackerCategoryCoreData: TrackerCategoryCoreData,
         with category: TrackerCategory)
     {
-        trackerCategoryCoreData.nameCategory = category.name
+        trackerCategoryCoreData.nameCategory = category.nameCategory
         for tracker in category.trackers {
             let track = TrackerCoreData(context: context)
             track.id = tracker.id
@@ -97,13 +97,13 @@ class TrackerCategoryStore: NSObject {
     
     func addTracker(_ tracker: Tracker, to trackerCategory: TrackerCategory) throws {
         let category = fetchedResultsController.fetchedObjects?.first {
-            $0.nameCategory == trackerCategory.name
+            $0.nameCategory == trackerCategory.nameCategory
         }
         let trackerCoreData = TrackerCoreData(context: context)
         trackerCoreData.nameTracker = tracker.name
         trackerCoreData.id = tracker.id
         trackerCoreData.emoji = tracker.emoji
-        trackerCoreData.schedule = tracker.schedule?.compactMap { $0.rawValue }
+        trackerCoreData.schedule = tracker.schedule?.compactMap { $0.rawValue } 
         trackerCoreData.color = tracker.color?.hexString
         
         category?.addToTrackers(trackerCoreData)
@@ -115,7 +115,7 @@ class TrackerCategoryStore: NSObject {
             throw TrackerCategoryStoreError.decodingErrorInvalidName
         }
         let trackers: [Tracker] = data.trackers?.compactMap { tracker in
-            guard let trackerCoreData = (tracker as? TrackerCoreData) else { return nil }
+            guard let trackerCoreData = (tracker as? TrackerCoreData) else { return }
             guard let id = trackerCoreData.id,
                   let nameTracker = trackerCoreData.nameTracker,
                   let color = trackerCoreData.color?.color,
@@ -125,11 +125,11 @@ class TrackerCategoryStore: NSObject {
                 name: nameTracker,
                 color: color,
                 emoji: emoji,
-                schedule: trackerCoreData.schedule?.compactMap { WeekDay(rawValue: $0) }
+                schedule: trackerCoreData.schedule?.compactMap { DayOfWeek(rawValue: $0) }
             )
         } ?? []
         return TrackerCategory(
-            name: name,
+            nameCategory: name,
             trackers: trackers
         )
     }

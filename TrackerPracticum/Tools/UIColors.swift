@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIColor {
-  
+    
     static var YPBlack = hexStringToUIColor(hex:"#1A1B22")
     static var YPBlackNight = hexStringToUIColor(hex:"#FFFFFF")
     static var YPWhite = hexStringToUIColor(hex:"#FFFFFF")
@@ -38,6 +38,29 @@ extension UIColor {
     static var CS16 = hexStringToUIColor(hex:"#AD56DA")
     static var CS17 = hexStringToUIColor(hex:"#8D72E6")
     static var CS18 = hexStringToUIColor(hex:"#2FD058")
+    
+    var hexString: String {
+        let components = self.cgColor.components
+        let r: CGFloat = components?[0] ?? 0.0
+        let g: CGFloat = components?[1] ?? 0.0
+        let b: CGFloat = components?[2] ?? 0.0
+        return String.init(
+            format: "%02lX%02lX%02lX",
+            lroundf(Float(r * 255)),
+            lroundf(Float(g * 255)),
+            lroundf(Float(b * 255))
+        )
+    }
 }
-
-
+extension String {
+    var color: UIColor {
+        var rgbValue:UInt64 = 0
+        Scanner(string: self).scanHexInt64(&rgbValue)
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+}
