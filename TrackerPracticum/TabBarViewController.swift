@@ -7,37 +7,16 @@
 
 import UIKit
 
-class TabBarViewController: UITabBarController {
+final class TabBarViewController: UITabBarController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //let storyboard = UIStoryboard(name: "TabBar", bundle: .main)
-
-        let navigationController = UINavigationController(rootViewController: TrackerViewController())
-       // let trackerViewController = TrackerViewController()
-        
-        navigationController.tabBarItem = UITabBarItem(title: "Трекер", image: UIImage(named: "barItemTracker"), selectedImage: nil)
-        
-        let statisticsViewController = StatisticsViewController()
-        
-        statisticsViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "barItemStatistics"), selectedImage: nil)
-        
-        self.viewControllers = [navigationController, statisticsViewController]
+        generateTabBar()
     }
     
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        let storyboard = UIStoryboard(name: "TabBar", bundle: .main)
-//
-//        let trackerViewController = storyboard.instantiateViewController(withIdentifier: "TrackerViewController")
-//
-//        trackerViewController.tabBarItem = UITabBarItem(title: "Трекер", image: UIImage(named: "barItemTracker"), selectedImage: nil)
-//
-//        let statisticsViewController = storyboard.instantiateViewController(withIdentifier: "StatisticsViewController")
-//
-//        statisticsViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "barItemStatistics"), selectedImage: nil)
-//
-//        self.viewControllers = [trackerViewController, statisticsViewController]
-//        view.backgroundColor = .YPWhiteDay
-//    }
-    
+    private func generateTabBar() {
+        tabBar.layer.borderWidth = 0.3
+        tabBar.layer.borderColor = UIColor(red:0.0/255.0, green:0.0/255.0, blue:0.0/255.0, alpha:0.2).cgColor
+        tabBar.clipsToBounds = true
+    }
 }
