@@ -103,7 +103,7 @@ class TrackerCategoryStore: NSObject {
         trackerCoreData.nameTracker = tracker.name
         trackerCoreData.id = tracker.id
         trackerCoreData.emoji = tracker.emoji
-        trackerCoreData.schedule = tracker.schedule?.compactMap { $0.rawValue } 
+        trackerCoreData.schedule = tracker.schedule?.compactMap { $0.rawValue }
         trackerCoreData.color = tracker.color?.hexString
         
         category?.addToTrackers(trackerCoreData)
@@ -115,7 +115,7 @@ class TrackerCategoryStore: NSObject {
             throw TrackerCategoryStoreError.decodingErrorInvalidName
         }
         let trackers: [Tracker] = data.trackers?.compactMap { tracker in
-            guard let trackerCoreData = (tracker as? TrackerCoreData) else { return }
+            guard let trackerCoreData = (tracker as? TrackerCoreData) else { return nil }
             guard let id = trackerCoreData.id,
                   let nameTracker = trackerCoreData.nameTracker,
                   let color = trackerCoreData.color?.color,
@@ -123,8 +123,7 @@ class TrackerCategoryStore: NSObject {
             return Tracker(
                 id: id,
                 name: nameTracker,
-                color: color,
-                emoji: emoji,
+                emoji: emoji, color: color,
                 schedule: trackerCoreData.schedule?.compactMap { DayOfWeek(rawValue: $0) }
             )
         } ?? []

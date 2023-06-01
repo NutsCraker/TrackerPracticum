@@ -14,7 +14,7 @@ enum DatabaseError: Error {
 
 final class DatabaseManager {
     
-    private let modelName = "Tracker"
+    private let modelName = "TrackerLibrary"
     var context: NSManagedObjectContext {
         persistentContainer.viewContext
     }
