@@ -251,8 +251,8 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell.configure(
             tracker.id,
             name: tracker.name,
-            color: tracker.color ,
-            emoji: tracker.emoji ,
+            color: tracker.color ?? .YPBlack ,
+            emoji: tracker.emoji ?? "😻",
             isCompleted: isCompleted,
             isEnabled: isEnabled,
             completedCount: completedCount
