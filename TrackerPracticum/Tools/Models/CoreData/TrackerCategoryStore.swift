@@ -29,13 +29,15 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
     )
 }
 
-class TrackerCategoryStore: NSObject {
+final class TrackerCategoryStore: NSObject {
     
+    weak var delegate: TrackerCategoryStoreDelegate?
     static let shared = TrackerCategoryStore()
+    
     private let trackerStore = TrackerStore()
     private let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
-    weak var delegate: TrackerCategoryStoreDelegate?
+
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
     private var updatedIndexes: IndexSet?
@@ -201,7 +203,7 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
             guard let oldIndexPath = indexPath, let newIndexPath = newIndexPath else { fatalError() }
             movedIndexes?.insert(.init(oldIndex: oldIndexPath.item, newIndex: newIndexPath.item))
         @unknown default:
-            fatalError()
+            assertionFailure("Something went Wrong")
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class TrackerStore {
+final class TrackerStore {
     
     private let context: NSManagedObjectContext
     
@@ -19,6 +19,12 @@ class TrackerStore {
     
     init(context: NSManagedObjectContext) {
         self.context = context
+    }
+    
+    func fetchTrackers() throws -> [Tracker] {
+        let fetchRequest = TrackerCoreData.fetchRequest()
+        let trackersFromCoreData = try context.fetch(fetchRequest)
+        return try trackersFromCoreData.map { try self.tracker(from: $0) }
     }
     
     func addNewTracker(_ tracker: Tracker) throws {
@@ -35,12 +41,7 @@ class TrackerStore {
         trackerCoreData.color = tracker.color?.hexString
     }
     
-    func fetchTrackers() throws -> [Tracker] {
-        let fetchRequest = TrackerCoreData.fetchRequest()
-        let trackersFromCoreData = try context.fetch(fetchRequest)
-        return try trackersFromCoreData.map { try self.tracker(from: $0) }
-    }
-    
+ 
     func tracker(from data: TrackerCoreData) throws -> Tracker {
         guard let name = data.nameTracker else {
             throw DatabaseError.someError

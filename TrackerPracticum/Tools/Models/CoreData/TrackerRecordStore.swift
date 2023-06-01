@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class TrackerRecordStore {
+final class TrackerRecordStore {
     
     private let context: NSManagedObjectContext
     static let shared = TrackerRecordStore()
@@ -41,20 +41,14 @@ class TrackerRecordStore {
     func fetchTrackerRecord() throws -> [TrackerRecord] {
         let fetchRequest = TrackerRecordCoreData.fetchRequest()
         let trackerRecordFromCoreData = try context.fetch(fetchRequest)
-        return try trackerRecordFromCoreData.map { try self.trackerRecord(from: $0) }
+        return try trackerRecordFromCoreData.map {
+            try self.trackerRecord(from: $0) }
     }
     
     func trackerRecord(from data: TrackerRecordCoreData) throws -> TrackerRecord {
-        guard let id = data.id else {
-            throw DatabaseError.someError
-        }
-        guard let date = data.date else {
-            throw DatabaseError.someError
-        }
-        return TrackerRecord(
-            id: id,
-            date: date
-        )
+        guard let id = data.id else {throw DatabaseError.someError}
+        guard let date = data.date else {throw DatabaseError.someError}
+        return TrackerRecord(id: id,date: date)
     }
 }
 
