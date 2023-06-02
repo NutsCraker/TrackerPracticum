@@ -15,7 +15,7 @@ final class TrackersCollectionView: UICollectionViewCell {
     
     static let identifier = "trackersCollectionViewCell"
     
-    public weak var delegate: TrackersCollectionViewDelegate?
+    weak var delegate: TrackersCollectionViewDelegate?
     private var isCompletedToday: Bool = false
     private var trackerId: UUID? = nil
     private let limitNumberOfCharacters = 38

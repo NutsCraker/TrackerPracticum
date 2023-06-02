@@ -11,7 +11,7 @@ protocol CreateTrackerViewControllerDelegate: AnyObject {
     func createTracker(_ tracker: Tracker, categoryName: String)
 }
 
-class CreateTrackerViewController: UIViewController {
+final class CreateTrackerViewController: UIViewController {
    
     public weak var delegate: CreateTrackerViewControllerDelegate?
     
