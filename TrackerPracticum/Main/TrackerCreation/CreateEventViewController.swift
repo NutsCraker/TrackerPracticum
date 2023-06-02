@@ -122,7 +122,14 @@ class CreateEventViewController: UIViewController {
         return view
     }()
     
-    private lazy var forwardImage: UIImageView = {
+    private lazy var forwardCategory: UIImageView = {
+        let forwardImage = UIImageView()
+        forwardImage.image = UIImage(named: "chevronForward")
+        forwardImage.translatesAutoresizingMaskIntoConstraints = false
+        return forwardImage
+    }()
+    
+    private lazy var forwardSchedule: UIImageView = {
         let forwardImage = UIImageView()
         forwardImage.image = UIImage(named: "chevronForward")
         forwardImage.translatesAutoresizingMaskIntoConstraints = false
@@ -267,12 +274,12 @@ class CreateEventViewController: UIViewController {
         scrollView.addSubview(errorLabel)
         scrollView.addSubview(createEventView)
         createEventView.addSubview(categoryButton)
-        categoryButton.addSubview(forwardImage)
+        categoryButton.addSubview(forwardCategory)
         createEventView.addSubview(separatorView)
         if event == .regular {
             createEventView.addSubview(separatorView)
             createEventView.addSubview(scheduleButton)
-            scheduleButton.addSubview(forwardImage)
+            scheduleButton.addSubview(forwardSchedule)
         }
         updateScheduleButton()
         scrollView.addSubview(emojiAndColorCollectionView)
@@ -314,8 +321,8 @@ class CreateEventViewController: UIViewController {
             categoryButton.trailingAnchor.constraint(equalTo: createEventView.trailingAnchor),
             categoryButton.leadingAnchor.constraint(equalTo: createEventView.leadingAnchor),
             
-            forwardImage.trailingAnchor.constraint(equalTo: categoryButton.trailingAnchor, constant: -24),
-            forwardImage.centerYAnchor.constraint(equalTo: categoryButton.centerYAnchor),
+            forwardCategory.trailingAnchor.constraint(equalTo: categoryButton.trailingAnchor, constant: -24),
+            forwardCategory.centerYAnchor.constraint(equalTo: categoryButton.centerYAnchor),
             
             emojiAndColorCollectionView.topAnchor.constraint(equalTo: createEventView.bottomAnchor, constant: 22),
             emojiAndColorCollectionView.bottomAnchor.constraint(equalTo: buttonBackgroundView.topAnchor),
@@ -351,8 +358,8 @@ class CreateEventViewController: UIViewController {
                 scheduleButton.bottomAnchor.constraint(equalTo: createEventView.bottomAnchor),
                 scheduleButton.trailingAnchor.constraint(equalTo: createEventView.trailingAnchor),
                 scheduleButton.leadingAnchor.constraint(equalTo: createEventView.leadingAnchor),
-                forwardImage.trailingAnchor.constraint(equalTo: scheduleButton.trailingAnchor, constant: -24),
-                forwardImage.centerYAnchor.constraint(equalTo: scheduleButton.centerYAnchor)
+                forwardSchedule.trailingAnchor.constraint(equalTo: scheduleButton.trailingAnchor, constant: -24),
+                forwardSchedule.centerYAnchor.constraint(equalTo: scheduleButton.centerYAnchor)
             ]
         }
         NSLayoutConstraint.activate(constraints)
