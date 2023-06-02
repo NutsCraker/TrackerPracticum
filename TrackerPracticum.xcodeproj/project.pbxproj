@@ -124,6 +124,15 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		8885FFEC2A28D22900F686B2 /* TrackerCreation */ = {
+			isa = PBXGroup;
+			children = (
+				883049902A2119390058FBE8 /* CreateEventViewController.swift */,
+				88EE51232A0A44070071F3FA /* CreateTrackerViewController.swift */,
+			);
+			path = TrackerCreation;
+			sourceTree = "<group>";
+		};
 		88EE50F12A0A41370071F3FA = {
 			isa = PBXGroup;
 			children = (
@@ -143,12 +152,10 @@
 		88EE50FC2A0A41370071F3FA /* TrackerPracticum */ = {
 			isa = PBXGroup;
 			children = (
+				88EE511A2A0A42D30071F3FA /* Main */,
 				88EE51152A0A42060071F3FA /* Tools */,
 				88EE50FD2A0A41370071F3FA /* AppDelegate.swift */,
 				88EE50FF2A0A41370071F3FA /* SceneDelegate.swift */,
-				88EE51162A0A42570071F3FA /* TabBarViewController.swift */,
-				88EE51182A0A429F0071F3FA /* StatisticsViewController.swift */,
-				88EE511A2A0A42D30071F3FA /* Main */,
 				88EE51032A0A41370071F3FA /* Main.storyboard */,
 				88EE51062A0A413B0071F3FA /* Assets.xcassets */,
 				88EE51082A0A413B0071F3FA /* LaunchScreen.storyboard */,
@@ -171,12 +178,13 @@
 		88EE511A2A0A42D30071F3FA /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				8885FFEC2A28D22900F686B2 /* TrackerCreation */,
 				883846B22A25021100B0DB54 /* TrackerSchedule */,
 				883846AD2A25002900B0DB54 /* TrackerCategory */,
 				883846A82A24FF5D00B0DB54 /* TrackerCollection */,
-				88EE51232A0A44070071F3FA /* CreateTrackerViewController.swift */,
-				883049902A2119390058FBE8 /* CreateEventViewController.swift */,
 				88EE51252A0A446B0071F3FA /* TrackerViewController.swift */,
+				88EE51162A0A42570071F3FA /* TabBarViewController.swift */,
+				88EE51182A0A429F0071F3FA /* StatisticsViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";

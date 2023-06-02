@@ -122,20 +122,13 @@ class CreateEventViewController: UIViewController {
         return view
     }()
     
-    private lazy var forwardImage1: UIImageView = {
+    private lazy var forwardImage: UIImageView = {
         let forwardImage = UIImageView()
         forwardImage.image = UIImage(named: "chevronForward")
         forwardImage.translatesAutoresizingMaskIntoConstraints = false
         return forwardImage
     }()
-    
-    private lazy var forwardImage2: UIImageView = {
-        let forwardImage = UIImageView()
-        forwardImage.image = UIImage(named: "chevronForward")
-        forwardImage.translatesAutoresizingMaskIntoConstraints = false
-        return forwardImage
-    }()
-    
+
     private lazy var categoryButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Категория", for: .normal)
@@ -274,11 +267,12 @@ class CreateEventViewController: UIViewController {
         scrollView.addSubview(errorLabel)
         scrollView.addSubview(createEventView)
         createEventView.addSubview(categoryButton)
-        categoryButton.addSubview(forwardImage1)
+        categoryButton.addSubview(forwardImage)
+        createEventView.addSubview(separatorView)
         if event == .regular {
             createEventView.addSubview(separatorView)
             createEventView.addSubview(scheduleButton)
-            scheduleButton.addSubview(forwardImage2)
+            scheduleButton.addSubview(forwardImage)
         }
         updateScheduleButton()
         scrollView.addSubview(emojiAndColorCollectionView)
@@ -320,8 +314,8 @@ class CreateEventViewController: UIViewController {
             categoryButton.trailingAnchor.constraint(equalTo: createEventView.trailingAnchor),
             categoryButton.leadingAnchor.constraint(equalTo: createEventView.leadingAnchor),
             
-            forwardImage1.trailingAnchor.constraint(equalTo: categoryButton.trailingAnchor, constant: -24),
-            forwardImage1.centerYAnchor.constraint(equalTo: categoryButton.centerYAnchor),
+            forwardImage.trailingAnchor.constraint(equalTo: categoryButton.trailingAnchor, constant: -24),
+            forwardImage.centerYAnchor.constraint(equalTo: categoryButton.centerYAnchor),
             
             emojiAndColorCollectionView.topAnchor.constraint(equalTo: createEventView.bottomAnchor, constant: 22),
             emojiAndColorCollectionView.bottomAnchor.constraint(equalTo: buttonBackgroundView.topAnchor),
@@ -357,8 +351,8 @@ class CreateEventViewController: UIViewController {
                 scheduleButton.bottomAnchor.constraint(equalTo: createEventView.bottomAnchor),
                 scheduleButton.trailingAnchor.constraint(equalTo: createEventView.trailingAnchor),
                 scheduleButton.leadingAnchor.constraint(equalTo: createEventView.leadingAnchor),
-                forwardImage2.trailingAnchor.constraint(equalTo: scheduleButton.trailingAnchor, constant: -24),
-                forwardImage2.centerYAnchor.constraint(equalTo: scheduleButton.centerYAnchor)
+                forwardImage.trailingAnchor.constraint(equalTo: scheduleButton.trailingAnchor, constant: -24),
+                forwardImage.centerYAnchor.constraint(equalTo: scheduleButton.centerYAnchor)
             ]
         }
         NSLayoutConstraint.activate(constraints)
@@ -472,7 +466,7 @@ extension CreateEventViewController: UICollectionViewDelegate {
                 collectionView.deselectItem(at: selectedEmojiCell!, animated: true)
                 collectionView.cellForItem(at: selectedEmojiCell!)?.backgroundColor = .white
             }
-            cell?.backgroundColor = .lightGray
+            cell?.backgroundColor = .YPSelected
             selectedEmoji = cell?.emojiLabel.text ?? ""
             selectedEmojiCell = indexPath
         } else if section == 1 {
@@ -482,9 +476,10 @@ extension CreateEventViewController: UICollectionViewDelegate {
             }
             cell?.layer.borderWidth = 3
             cell?.layer.cornerRadius = 8
-            cell?.layer.borderColor = UIColor.lightGray.cgColor
+           
             selectedColor = cell?.colorView.backgroundColor ?? nil
             selectedColorCell = indexPath
+            cell?.layer.borderColor =  opacityChange(color: selectedColor!, opacity: 0.3).cgColor
         }
     }
     

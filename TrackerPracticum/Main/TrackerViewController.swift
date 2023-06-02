@@ -11,13 +11,10 @@ final class TrackerViewController: UIViewController {
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
     
-    //список категорий и вложенных в них трекеров
-    private var categories: [TrackerCategory] = []//MockData.categories
+    private var categories: [TrackerCategory] = []
     
-    //трекеры, которые были «выполнены» в выбранную дату
     private var completedTrackers: [TrackerRecord] = []
     
-    //отображается при поиске и/или изменении дня недели
     private var visibleCategories: [TrackerCategory] = []
     private var currentDate: Int?
     private var searchText: String = ""
@@ -52,7 +49,7 @@ final class TrackerViewController: UIViewController {
         searchTextField.placeholder = "Поиск"
         searchTextField.textColor = .YPBlack
         searchTextField.font = .systemFont(ofSize: 17)
-        searchTextField.backgroundColor = .YPGray
+        searchTextField.backgroundColor = .YPSelected
         searchTextField.layer.cornerRadius = 10
         searchTextField.indent(size: 30)
         searchTextField.translatesAutoresizingMaskIntoConstraints = false

@@ -53,7 +53,7 @@ final class CategoryViewController: UIViewController {
         var height = 75
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.identifier)
         tableView.layer.cornerRadius = 16
-        tableView.separatorColor = .YPGray
+        tableView.separatorColor = .YPLightGray
         tableView.backgroundColor = .YPBackground
         tableView.frame = CGRect(x: 16, y: 79, width: Int(width), height: height)
         tableView.dataSource = self
@@ -102,7 +102,6 @@ final class CategoryViewController: UIViewController {
     @objc
     private func addCategoryButtonAction() {
         dismiss(animated: true)
-        print("addCategoryButtonAction")
     }
 }
 

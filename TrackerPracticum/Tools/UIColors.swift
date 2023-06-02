@@ -19,6 +19,7 @@ extension UIColor {
     static var YPLightGray = hexStringToUIColor(hex:"#E6E8EB")
     static var YPBackground = hexStringToUIColor(hex:"E6E8EB")
     static var YPBackgroundNight = hexStringToUIColor(hex:"#414141")
+    static var YPSelected = hexStringToUIColor(hex:"#E6E8EB")
     
     static var CS01 = hexStringToUIColor(hex:"#FD4C49")
     static var CS02 = hexStringToUIColor(hex:"#FF881E")
@@ -51,6 +52,7 @@ extension UIColor {
             lroundf(Float(b * 255))
         )
     }
+    
 }
 extension String {
     var color: UIColor {

@@ -28,3 +28,8 @@ func hexStringToUIColor (hex:String) -> UIColor {
     )
     
 }
+    public func opacityChange (color: UIColor, opacity: Double) -> UIColor {
+           
+        return color.withAlphaComponent(opacity)
+       }
+
