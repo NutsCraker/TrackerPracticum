@@ -39,7 +39,6 @@ final class CreateEventViewController: UIViewController {
     private let limitNumberOfCharacters = 38
     private var numberOfCharacters = 0
     private var heightAnchor: NSLayoutConstraint?
-    let trackerViewController = TrackerViewController()
     private var schedule: [DayOfWeek] = [] {
         didSet {
             updateCreateEventButton()

@@ -42,7 +42,7 @@ final class TrackerViewController: UIViewController {
         return label
     }()
     
-    public var datePicker = UIDatePicker()
+    private lazy var datePicker = UIDatePicker()
     
     private lazy var searchTextField: UITextField = {
         let searchTextField = UITextField()
