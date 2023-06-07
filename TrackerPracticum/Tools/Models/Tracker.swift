@@ -12,6 +12,7 @@ struct Tracker: Hashable {
     let emoji: String?
     let color: UIColor?
     let schedule: [DayOfWeek]?
+    //let date: Date?
 }
 
 struct TrackerRecord {

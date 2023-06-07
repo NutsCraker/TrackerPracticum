@@ -39,6 +39,7 @@ final class CreateEventViewController: UIViewController {
     private let limitNumberOfCharacters = 38
     private var numberOfCharacters = 0
     private var heightAnchor: NSLayoutConstraint?
+    let trackerViewController = TrackerViewController()
     private var schedule: [DayOfWeek] = [] {
         didSet {
             updateCreateEventButton()
@@ -247,9 +248,14 @@ final class CreateEventViewController: UIViewController {
     }
     
     @objc func createEventButtonAction() {
+        if event == .irregular {
+            schedule = [.monday,.tuesday,.wednesday,.thursday,.friday,.saturday,.sunday]
+        }
         let tracker = Tracker(id: UUID(), name: textField.text ?? "", emoji: selectedEmoji, color: selectedColor ?? .YPBlack, schedule: schedule)
         delegate?.createTracker(tracker, categoryName: "Важное")
         dismiss(animated: true)
+        
+        
     }
     
     @objc private func cancelButtonAction() {

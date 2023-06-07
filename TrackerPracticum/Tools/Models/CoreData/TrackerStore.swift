@@ -39,6 +39,7 @@ final class TrackerStore {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.schedule = tracker.schedule?.compactMap { $0.rawValue }
         trackerCoreData.color = tracker.color?.hexString
+       // trackerCoreData.date = tracker.date
     }
     
  
@@ -63,6 +64,7 @@ final class TrackerStore {
             name: name,
             emoji: emoji, color: color.color,
             schedule: schedule.compactMap {DayOfWeek(rawValue: $0) }
+          
         )
     }
 }
