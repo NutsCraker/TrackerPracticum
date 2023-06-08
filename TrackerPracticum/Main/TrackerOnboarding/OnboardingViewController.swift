@@ -48,7 +48,7 @@ final class OnboardingViewController: UIPageViewController, UIPageViewController
         return label
     }()
     
-    private lazy var BluePageEnterButton: UIButton = {
+    private lazy var pageEnterButtonBlue: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -70,7 +70,7 @@ final class OnboardingViewController: UIPageViewController, UIPageViewController
         return label
     }()
     
-    private lazy var redPageEnterButton: UIButton = {
+    private lazy var pageEnterButtonRed: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -95,33 +95,33 @@ final class OnboardingViewController: UIPageViewController, UIPageViewController
     
     private func addBluePage() {
         bluePage.view.addSubview(bluePageLabel)
-        bluePage.view.addSubview(BluePageEnterButton)
+        bluePage.view.addSubview(pageEnterButtonBlue)
         
         NSLayoutConstraint.activate([
             bluePageLabel.bottomAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.bottomAnchor, constant: -290),
             bluePageLabel.centerXAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.centerXAnchor),
             bluePageLabel.widthAnchor.constraint(equalToConstant: 343),
             
-            BluePageEnterButton.heightAnchor.constraint(equalToConstant: 60),
-            BluePageEnterButton.leadingAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            BluePageEnterButton.trailingAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            BluePageEnterButton.bottomAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.bottomAnchor, constant: -71)
+            pageEnterButtonBlue.heightAnchor.constraint(equalToConstant: 60),
+            pageEnterButtonBlue.leadingAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            pageEnterButtonBlue.trailingAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            pageEnterButtonBlue.bottomAnchor.constraint(equalTo: bluePage.view.safeAreaLayoutGuide.bottomAnchor, constant: -71)
         ])
     }
     
     private func addRedPage() {
         redPage.view.addSubview(redPageLabel)
-        redPage.view.addSubview(redPageEnterButton)
+        redPage.view.addSubview(pageEnterButtonRed)
         
         NSLayoutConstraint.activate([
             redPageLabel.bottomAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.bottomAnchor, constant: -290),
             redPageLabel.centerXAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.centerXAnchor),
             redPageLabel.widthAnchor.constraint(equalToConstant: 343),
             
-            redPageEnterButton.heightAnchor.constraint(equalToConstant: 60),
-            redPageEnterButton.leadingAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            redPageEnterButton.trailingAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            redPageEnterButton.bottomAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.bottomAnchor, constant: -71)
+            pageEnterButtonRed.heightAnchor.constraint(equalToConstant: 60),
+            pageEnterButtonRed.leadingAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            pageEnterButtonRed.trailingAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            pageEnterButtonRed.bottomAnchor.constraint(equalTo: redPage.view.safeAreaLayoutGuide.bottomAnchor, constant: -71)
         ])
     }
     

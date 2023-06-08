@@ -1,21 +1,19 @@
 //
-//  ViewController.swift
-//  Tracker
+//  TabBarViewController.swift
+//  TrackerPracticum
 //
-//  Created by Alexander Farizanov on 09.05.2023
+//  Created by Alexander Farizanov on 09.05.2023.
 //
-
 import UIKit
 
-final class TrackerViewController: UIViewController {
+final class TrackersViewController: UIViewController {
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
-    
-    private var categories: [TrackerCategory] = []
-    
+
+    private var categories: [TrackerCategoryModel] = []
     private var completedTrackers: [TrackerRecord] = []
     
-    private var visibleCategories: [TrackerCategory] = []
+    private var visibleCategories: [TrackerCategoryModel] = []
     private var currentDate: Int?
     private var searchText: String = ""
     private var widthAnchor: NSLayoutConstraint?
@@ -49,7 +47,7 @@ final class TrackerViewController: UIViewController {
         searchTextField.placeholder = "Поиск"
         searchTextField.textColor = .YPBlack
         searchTextField.font = .systemFont(ofSize: 17)
-        searchTextField.backgroundColor = .YPSelected
+        searchTextField.backgroundColor = .YPLightGray
         searchTextField.layer.cornerRadius = 10
         searchTextField.indent(size: 30)
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -88,13 +86,13 @@ final class TrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .YPWhite
+        view.backgroundColor = .white
         setDayOfWeek()
-        updateCategories()
+        updateCategories(with: trackerCategoryStore.trackerCategories)
         completedTrackers = try! self.trackerRecordStore.fetchTrackerRecord()
         makeNavBar()
         addSubviews()
-        setupLayoutsearchTextFieldAndButton()
+        setupLayoutSearchTextFieldAndButton()
         setupLayout()
         trackerCategoryStore.delegate = self
     }
@@ -121,14 +119,14 @@ final class TrackerViewController: UIViewController {
         let components = Calendar.current.dateComponents([.weekday], from: sender.date)
         if let day = components.weekday {
             currentDate = day
-            updateCategories()
+            updateCategories(with: trackerCategoryStore.trackerCategories)
         }
     }
     
     @objc func addTracker() {
         let trackersView = CreateTrackerViewController()
-        trackersView.delegate = self
-        present(trackersView, animated: true)
+               trackersView.delegate = self
+               present(trackersView, animated: true)
     }
     
     @objc private func cancelEditingButtonAction() {
@@ -136,7 +134,6 @@ final class TrackerViewController: UIViewController {
         widthAnchor?.constant = 0
         setupLayout()
         searchText = ""
-        updateCategories()
     }
     
     private func addSubviews() {
@@ -148,7 +145,7 @@ final class TrackerViewController: UIViewController {
         view.addSubview(collectionView)
     }
     
-    private func setupLayoutsearchTextFieldAndButton() {
+    private func setupLayoutSearchTextFieldAndButton() {
         widthAnchor = cancelEditingButton.widthAnchor.constraint(equalToConstant: 0)
         
         NSLayoutConstraint.activate([
@@ -193,10 +190,9 @@ final class TrackerViewController: UIViewController {
         currentDate = components.weekday
     }
     
-    private func updateCategories() {
-        var newCategories: [TrackerCategory] = []
-        visibleCategories = trackerCategoryStore.trackerCategories
-        for category in visibleCategories {
+    private func updateCategories(with categories: [TrackerCategoryModel]) {
+        var newCategories: [TrackerCategoryModel] = []
+        for category in categories {
             var newTrackers: [Tracker] = []
             for tracker in category.visibleTrackers(filterString: searchText) {
                 guard let schedule = tracker.schedule else { return }
@@ -206,7 +202,7 @@ final class TrackerViewController: UIViewController {
                 }
             }
             if newTrackers.count > 0 {
-                let newCategory = TrackerCategory(nameCategory: category.nameCategory, trackers: newTrackers)
+                let newCategory = TrackerCategoryModel(name: category.name, trackers: newTrackers)
                 newCategories.append(newCategory)
             }
         }
@@ -215,7 +211,7 @@ final class TrackerViewController: UIViewController {
     }
 }
 
-extension TrackerViewController: UICollectionViewDataSource {
+extension TrackersViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         let count = visibleCategories.count
@@ -248,8 +244,8 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell.configure(
             tracker.id,
             name: tracker.name,
-            color: tracker.color ?? .YPBlack ,
-            emoji: tracker.emoji ?? "😻",
+            color: tracker.color ?? .YPBlue,
+            emoji: tracker.emoji ?? "",
             isCompleted: isCompleted,
             isEnabled: isEnabled,
             completedCount: completedCount
@@ -258,14 +254,14 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
 }
 
-extension TrackerViewController: UICollectionViewDelegateFlowLayout {
+extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: 167, height: 148)
+        return CGSize(width: (self.collectionView.bounds.width - 7) / 2, height: 148)
     }
     
     func collectionView(
@@ -273,7 +269,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        return 10
+        return 0
     }
     
     func collectionView(
@@ -281,7 +277,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
-        return 10
+        return 7
     }
     
     func collectionView(
@@ -300,7 +296,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         }
         
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? TrackersSupplementaryView else { return UICollectionReusableView() }
-        view.titleLabel.text = visibleCategories[indexPath.section].nameCategory
+        view.titleLabel.text = visibleCategories[indexPath.section].name
         return view
     }
     
@@ -315,44 +311,49 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,height: UIView.layoutFittingExpandedSize.height), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
     }
 }
-
-extension TrackerViewController: CreateTrackerViewControllerDelegate {
+extension TrackersViewController: CreateTrackerViewControllerDelegate {
     
     func createTracker(
         _ tracker: Tracker, categoryName: String
     ) {
-        var categoryToUpdate: TrackerCategory?
-        let categories: [TrackerCategory] = trackerCategoryStore.trackerCategories
+        var categoryToUpdate: TrackerCategoryModel?
+        let categories: [TrackerCategoryModel] = trackerCategoryStore.trackerCategories
         for i in 0..<categories.count {
-            if categories[i].nameCategory == categoryName {
+            if categories[i].name == categoryName {
                 categoryToUpdate = categories[i]
             }
         }
         if categoryToUpdate != nil {
             try? trackerCategoryStore.addTracker(tracker, to: categoryToUpdate!)
         } else {
-            let newCategory = TrackerCategory(nameCategory: categoryName, trackers: [tracker])
+            let newCategory = TrackerCategoryModel(name: categoryName, trackers: [tracker])
             categoryToUpdate = newCategory
             try? trackerCategoryStore.addNewTrackerCategory(categoryToUpdate!)
         }
-        updateCategories()
         dismiss(animated: true)
     }
 }
 
-extension TrackerViewController {
+
+
+
+//extension TrackersViewController: RegularOrIrregularEventVCDelegate {
+    
+   
+//}
+
+extension TrackersViewController {
     
     @objc func textFieldChanged() {
         searchText = searchTextField.text ?? ""
         imageView.image = searchText.isEmpty ? UIImage(named: "star") : UIImage(named: "notFound")
         label.text = searchText.isEmpty ? "Что будем отслеживать?" : "Ничего не найдено"
         widthAnchor?.constant = 85
-        visibleCategories = trackerCategoryStore.predicateFetch(nameTracker: searchText)
-        collectionView.reloadData()
+        updateCategories(with: trackerCategoryStore.predicateFetch(nameTracker: searchText))
     }
 }
 
-extension TrackerViewController: TrackersCollectionViewDelegate {
+extension TrackersViewController: TrackersCollectionViewDelegate {
     
     func completedTracker(id: UUID) {
         if let index = completedTrackers.firstIndex(where: { record in
@@ -360,7 +361,7 @@ extension TrackerViewController: TrackersCollectionViewDelegate {
             record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
         }) {
             completedTrackers.remove(at: index)
-            try? trackerRecordStore.deleteTrackerRecord(TrackerRecord(id: id, date: datePicker.date))
+            try? trackerRecordStore.deleteTrackerRecord(with: id)
         } else {
             completedTrackers.append(TrackerRecord(id: id, date: datePicker.date))
             try? trackerRecordStore.addNewTrackerRecord(TrackerRecord(id: id, date: datePicker.date))
@@ -369,21 +370,21 @@ extension TrackerViewController: TrackersCollectionViewDelegate {
     }
 }
 
-extension TrackerViewController: UITextFieldDelegate {
+extension TrackersViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         widthAnchor?.constant = 85
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        setupLayoutsearchTextFieldAndButton()
+        setupLayoutSearchTextFieldAndButton()
     }
 }
 
-extension TrackerViewController: TrackerCategoryStoreDelegate {
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    
     func store(_ store: TrackerCategoryStore, didUpdate update: TrackerCategoryStoreUpdate) {
-        visibleCategories = trackerCategoryStore.trackerCategories
+        updateCategories(with: trackerCategoryStore.trackerCategories)
         collectionView.reloadData()
     }
 }
-

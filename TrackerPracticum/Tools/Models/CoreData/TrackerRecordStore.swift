@@ -9,9 +9,7 @@ import Foundation
 import CoreData
 
 final class TrackerRecordStore {
-    
     private let context: NSManagedObjectContext
-    static let shared = TrackerRecordStore()
     
     convenience init() {
         let context = DatabaseManager.shared.context
@@ -28,9 +26,16 @@ final class TrackerRecordStore {
         try context.save()
     }
     
-    func deleteTrackerRecord(_ trackerRecord: TrackerRecord) throws {
-        let trackerRecordCoreData = TrackerRecordCoreData(context: context)
-        updateExistingTrackerRecord(trackerRecordCoreData, with: trackerRecord)
+    func deleteTrackerRecord(with id: UUID) throws {
+        let fetchRequest = TrackerRecordCoreData.fetchRequest()
+        let trackerRecordFromCoreData = try context.fetch(fetchRequest)
+        let record = trackerRecordFromCoreData.first {
+            $0.id == id
+        }
+        if let record = record {
+            context.delete(record)
+            try context.save()
+        }
     }
     
     func updateExistingTrackerRecord(_ trackerRecordCoreData: TrackerRecordCoreData, with record: TrackerRecord) {
@@ -41,14 +46,19 @@ final class TrackerRecordStore {
     func fetchTrackerRecord() throws -> [TrackerRecord] {
         let fetchRequest = TrackerRecordCoreData.fetchRequest()
         let trackerRecordFromCoreData = try context.fetch(fetchRequest)
-        return try trackerRecordFromCoreData.map {
-            try self.trackerRecord(from: $0) }
+        return try trackerRecordFromCoreData.map { try self.trackerRecord(from: $0) }
     }
     
     func trackerRecord(from data: TrackerRecordCoreData) throws -> TrackerRecord {
-        guard let id = data.id else {throw DatabaseError.someError}
-        guard let date = data.date else {throw DatabaseError.someError}
-        return TrackerRecord(id: id,date: date)
+        guard let id = data.id else {
+            throw DatabaseError.someError
+        }
+        guard let date = data.date else {
+            throw DatabaseError.someError
+        }
+        return TrackerRecord(
+            id: id,
+            date: date
+        )
     }
 }
-

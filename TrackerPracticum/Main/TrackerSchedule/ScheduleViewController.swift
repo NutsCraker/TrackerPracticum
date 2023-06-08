@@ -14,7 +14,7 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 final class ScheduleViewController: UIViewController {
     
     public weak var delegate: ScheduleViewControllerDelegate?
-    private var schedule: [DayOfWeek] = []
+    public var schedule: [DayOfWeek] = []
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .YPBlack
