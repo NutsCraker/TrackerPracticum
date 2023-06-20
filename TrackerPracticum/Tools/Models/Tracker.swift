@@ -12,8 +12,12 @@ struct Tracker: Hashable {
     let emoji: String?
     let color: UIColor?
     let schedule: [DayOfWeek]?
+    let pinned: Bool?
+//    var category: TrackerCategoryModel? {
+ //       return TrackerCategoryStore().trackerCategories(forTracker: self)
+    }
     //let date: Date?
-}
+//}
 
 struct TrackerRecord {
     let id: UUID

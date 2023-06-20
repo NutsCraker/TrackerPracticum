@@ -1,10 +1,3 @@
-//
-//  TrackerCollectionView.swift
-//  TrackerPracticum
-//
-//  Created by Alexander Farizanov on 29.05.2023.
-//
-
 import UIKit
 
 protocol TrackersCollectionViewDelegate: AnyObject {
@@ -15,16 +8,27 @@ final class TrackersCollectionView: UICollectionViewCell {
     
     static let identifier = "trackersCollectionViewCell"
     
-    weak var delegate: TrackersCollectionViewDelegate?
+    public weak var delegate: TrackersCollectionViewDelegate?
+    public var menuView: UIView {
+        return trackerView
+    }
+    private let limitNumberOfCharacters = 38
     private var isCompletedToday: Bool = false
     private var trackerId: UUID? = nil
-    private let limitNumberOfCharacters = 38
     
     private lazy var trackerView: UIView = {
         let trackerView = UIView()
         trackerView.layer.cornerRadius = 16
         trackerView.translatesAutoresizingMaskIntoConstraints = false
         return trackerView
+    }()
+    
+    private lazy var pinImageView: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "pinSquare")
+        image.isHidden = false
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
     }()
     
     private lazy var emojiView: UIView = {
@@ -43,7 +47,7 @@ final class TrackersCollectionView: UICollectionViewCell {
     
     private lazy var trackerNameLabel: UILabel = {
         let trackerNameLabel = UILabel()
-        trackerNameLabel.font = .systemFont(ofSize: 12)
+//        trackerNameLabel.font = .mediumSystemFont(ofSize: 12)
         trackerNameLabel.numberOfLines = 2
         trackerNameLabel.text = "Название трекера "
         trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -59,8 +63,10 @@ final class TrackersCollectionView: UICollectionViewCell {
     
     private lazy var checkButton: UIButton = {
         let checkButton = UIButton()
-        checkButton.setImage(UIImage(named: "plus"), for: .normal)
+        let image = UIImage(named: "plus")
+        checkButton.setImage(image, for: .normal)
         checkButton.addTarget(self, action: #selector(didTapCheckButton), for: .touchUpInside)
+        checkButton.backgroundColor = .white
         checkButton.tintColor = .white
         checkButton.layer.cornerRadius = 17
         checkButton.translatesAutoresizingMaskIntoConstraints = false
@@ -71,6 +77,7 @@ final class TrackersCollectionView: UICollectionViewCell {
         super.init(frame: frame)
         
         contentView.addSubview(trackerView)
+        trackerView.addSubview(pinImageView)
         trackerView.addSubview(emojiView)
         emojiView.addSubview(emojiLabel)
         trackerView.addSubview(trackerNameLabel)
@@ -78,11 +85,15 @@ final class TrackersCollectionView: UICollectionViewCell {
         contentView.addSubview(checkButton)
         
         NSLayoutConstraint.activate([
-            
-            trackerView.heightAnchor.constraint(equalToConstant: 90),
-            trackerView.widthAnchor.constraint(equalToConstant: 167),
             trackerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             trackerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            trackerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -58),
+            trackerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            pinImageView.heightAnchor.constraint(equalToConstant: 12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 8),
+            pinImageView.topAnchor.constraint(equalTo: trackerView.topAnchor, constant: 18),
+            pinImageView.trailingAnchor.constraint(equalTo: trackerView.trailingAnchor, constant: -12),
             
             emojiView.heightAnchor.constraint(equalToConstant: 24),
             emojiView.widthAnchor.constraint(equalToConstant: 24),
@@ -97,7 +108,7 @@ final class TrackersCollectionView: UICollectionViewCell {
             trackerNameLabel.leadingAnchor.constraint(equalTo: trackerView.leadingAnchor, constant: 12),
             trackerNameLabel.heightAnchor.constraint(equalToConstant: 34),
             
-            checkButton.topAnchor.constraint(equalTo: trackerView.bottomAnchor, constant: 8),
+            checkButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             checkButton.heightAnchor.constraint(equalToConstant: 34),
             checkButton.widthAnchor.constraint(equalToConstant: 34 ),
@@ -110,7 +121,6 @@ final class TrackersCollectionView: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     @objc private func didTapCheckButton() {
         guard let id = trackerId else {
@@ -127,31 +137,23 @@ final class TrackersCollectionView: UICollectionViewCell {
         emoji: String,
         isCompleted: Bool,
         isEnabled: Bool,
-        completedCount: Int
+        completedCount: Int,
+        pinned: Bool
     ) {
-        let mod10 = completedCount % 10
-        let mod100 = completedCount % 100
-        let not10To20 = mod100 < 10 || mod100 > 20
-        var str = "\(completedCount) "
-        
         trackerId = id
         trackerNameLabel.text = name
         trackerView.backgroundColor = color
         checkButton.backgroundColor = color
         emojiLabel.text = emoji
+        pinImageView.isHidden = !pinned
         isCompletedToday = isCompleted
         checkButton.setImage(isCompletedToday ? UIImage(systemName: "checkmark")! : UIImage(systemName: "plus")!, for: .normal)
-        checkButton.isEnabled = isEnabled
-        
-        if completedCount == 0 {
-            str += "дней"
-        } else if mod10 == 1 && not10To20 {
-            str += "день"
-        } else if (mod10 == 2 || mod10 == 3 || mod10 == 4) && not10To20 {
-            str += "дня"
+        if isCompletedToday == true {
+            checkButton.alpha = 0.5
         } else {
-            str += "дней"
+            checkButton.alpha = 1
         }
-        resultLabel.text = str
+        checkButton.isEnabled = isEnabled
+        resultLabel.text = String.localizedStringWithFormat(NSLocalizedString("numberOfDay", comment: "Число дней"), completedCount)
     }
 }

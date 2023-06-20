@@ -12,6 +12,12 @@ extension Date {
         Calendar.current.dateComponents([.year, .month, .day], from: self)
     }
 }
+enum Filter: String, CaseIterable {
+    case all = "Все трекеры"
+    case today = "Трекеры на сегодня"
+    case completed = "Завершенные"
+    case uncompleted = "Незавершенные"
+}
 
 
 enum DayOfWeek: String, CaseIterable {
