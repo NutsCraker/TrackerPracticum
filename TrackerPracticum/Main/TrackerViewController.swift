@@ -147,10 +147,10 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc func addTracker() {
-        let trackersVC = RegularOrIrregularEventVC()
-        trackersVC.delegate = self
-        present(trackersVC, animated: true)
-    }
+          let trackersView = CreateTrackerViewController()
+                 trackersView.delegate = self
+                 present(trackersView, animated: true)
+      }
     
     @objc private func cancelEditingButtonAction() {
         searchTextField.text = ""
@@ -441,7 +441,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TrackersViewController: RegularOrIrregularEventVCDelegate {
+extension TrackersViewController: CreateTrackerViewControllerDelegate {
     
     func createTracker(
         _ tracker: Tracker, categoryName: String
