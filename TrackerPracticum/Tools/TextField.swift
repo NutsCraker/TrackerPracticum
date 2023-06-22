@@ -28,5 +28,16 @@ final class TextField: UISearchTextField {
         font = UIFont.systemFont(ofSize: 17)
     }
 }
+extension UITextField {
+    func indent(size:CGFloat) {
+        self.leftView = UIView(frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: size, height: self.frame.height))
+        self.leftViewMode = .always
+    }
+}
 
+extension UIFont {
+    class func mediumSystemFont(ofSize pointSize: CGFloat) -> UIFont {
+        return self.systemFont(ofSize: pointSize, weight: .medium)
+    }
+}
 

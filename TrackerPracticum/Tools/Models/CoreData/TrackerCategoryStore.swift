@@ -38,7 +38,7 @@ class TrackerCategoryStore: NSObject {
         try! self.init(context: context)
     }
     
-    var trackerCategories: [TrackerCategoryModel] {
+    var trackerCategories: [TrackerCategory] {
         guard let objects = self.fetchedResultsController.fetchedObjects,
               let trackerCategories = try? objects.map({ try self.trackerCategory(from: $0)})
         else { return [] }
@@ -64,13 +64,13 @@ class TrackerCategoryStore: NSObject {
         try controller.performFetch()
     }
     
-    func addNewTrackerCategory(_ trackerCategory: TrackerCategoryModel) throws {
+    func addNewTrackerCategory(_ trackerCategory: TrackerCategory) throws {
         let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
         updateExistingTrackerCategory(trackerCategoryCoreData, with: trackerCategory)
         try context.save()
     }
     
-    func updateCategoryName(_ newCategoryName: String, _ editableCategory: TrackerCategoryModel) throws {
+    func updateCategoryName(_ newCategoryName: String, _ editableCategory: TrackerCategory) throws {
         let category = fetchedResultsController.fetchedObjects?.first {
             $0.nameCategory == editableCategory.name
         }
@@ -84,7 +84,7 @@ class TrackerCategoryStore: NSObject {
         }
     }
     
-    func category(forTracker tracker: Tracker) -> TrackerCategoryModel? {
+    func category(forTracker tracker: Tracker) -> TrackerCategory? {
         let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         request.returnsObjectsAsFaults = false
         request.predicate = NSPredicate(format: "ANY trackers.id == %@", tracker.id.uuidString)
@@ -94,7 +94,7 @@ class TrackerCategoryStore: NSObject {
         return categories.first
     }
     
-    func deleteCategory(_ categoryToDelete: TrackerCategoryModel) throws {
+    func deleteCategory(_ categoryToDelete: TrackerCategory) throws {
         let category = fetchedResultsController.fetchedObjects?.first {
             $0.nameCategory == categoryToDelete.name
         }
@@ -106,7 +106,7 @@ class TrackerCategoryStore: NSObject {
     
     func updateExistingTrackerCategory(
         _ trackerCategoryCoreData: TrackerCategoryCoreData,
-        with category: TrackerCategoryModel) {
+        with category: TrackerCategory) {
             trackerCategoryCoreData.nameCategory = category.name
             for tracker in category.trackers {
                 let track = TrackerCoreData(context: context)
@@ -119,7 +119,7 @@ class TrackerCategoryStore: NSObject {
             }
         }
     
-    func addTracker(_ tracker: Tracker, to trackerCategory: TrackerCategoryModel) throws {
+    func addTracker(_ tracker: Tracker, to trackerCategory: TrackerCategory) throws {
         let category = fetchedResultsController.fetchedObjects?.first {
             $0.nameCategory == trackerCategory.name
         }
@@ -134,7 +134,7 @@ class TrackerCategoryStore: NSObject {
         try context.save()
     }
     
-    func trackerCategory(from data: TrackerCategoryCoreData) throws -> TrackerCategoryModel {
+    func trackerCategory(from data: TrackerCategoryCoreData) throws -> TrackerCategory {
         guard let name = data.nameCategory else {
             throw TrackerCategoryStoreError.decodingErrorInvalidName
         }
@@ -149,13 +149,12 @@ class TrackerCategoryStore: NSObject {
             return Tracker(
                 id: id,
                 name: nameTracker,
-                color: color,
-                emoji: emoji,
+                emoji: emoji, color: color,
                 schedule: trackerCoreData.schedule?.compactMap { DayOfWeek(rawValue: $0) },
                 pinned: pinned
             )
         } ?? []
-        return TrackerCategoryModel(
+        return TrackerCategory(
             name: name,
             trackers: trackers
         )
@@ -163,7 +162,7 @@ class TrackerCategoryStore: NSObject {
 }
 
 extension TrackerCategoryStore {
-    func predicateFetch(nameTracker: String) -> [TrackerCategoryModel] {
+    func predicateFetch(nameTracker: String) -> [TrackerCategory] {
         if nameTracker.isEmpty {
             return trackerCategories
         } else {

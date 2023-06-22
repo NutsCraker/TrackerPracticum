@@ -20,7 +20,6 @@
 		885A05C82A32605D00A6E681 /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885A05C72A32605D00A6E681 /* CategoryListView.swift */; };
 		885A05CA2A3260AA00A6E681 /* CategoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885A05C92A3260AA00A6E681 /* CategoryListViewModel.swift */; };
 		885AF3DA2A123E5600A4E68F /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885AF3D92A123E5600A4E68F /* DayOfWeek.swift */; };
-		885AF3DC2A123E9B00A4E68F /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885AF3DB2A123E9B00A4E68F /* TrackerCategory.swift */; };
 		885AF3DE2A123F0F00A4E68F /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885AF3DD2A123F0F00A4E68F /* Tracker.swift */; };
 		885AF3EF2A13834900A4E68F /* ColorConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885AF3EE2A13834900A4E68F /* ColorConvert.swift */; };
 		886EDBE22A41CC180010170D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 886EDBE12A41CC180010170D /* SnapshotTesting */; };
@@ -70,12 +69,13 @@
 		885A05C72A32605D00A6E681 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
 		885A05C92A3260AA00A6E681 /* CategoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewModel.swift; sourceTree = "<group>"; };
 		885AF3D92A123E5600A4E68F /* DayOfWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeek.swift; sourceTree = "<group>"; };
-		885AF3DB2A123E9B00A4E68F /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		885AF3DD2A123F0F00A4E68F /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		885AF3EE2A13834900A4E68F /* ColorConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConvert.swift; sourceTree = "<group>"; };
 		886EDBEE2A41CED40010170D /* TrackerPracticumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerPracticumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		886EDBF02A41CED40010170D /* TrackerPracticumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerPracticumTests.swift; sourceTree = "<group>"; };
 		886EDBF72A41D2510010170D /* TrackersFiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersFiltersViewController.swift; sourceTree = "<group>"; };
+		886EDBF92A4325C10010170D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		886EDBFA2A4325C10010170D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		8885FFDC2A27BE2D00F686B2 /* TrackerLibrary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerLibrary.xcdatamodel; sourceTree = "<group>"; };
 		8885FFDF2A27BE7300F686B2 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		8885FFE12A27BEBE00F686B2 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
@@ -260,7 +260,6 @@
 			children = (
 				8885FFDE2A27BE5B00F686B2 /* CoreData */,
 				885AF3DD2A123F0F00A4E68F /* Tracker.swift */,
-				885AF3DB2A123E9B00A4E68F /* TrackerCategory.swift */,
 				885AF3D92A123E5600A4E68F /* DayOfWeek.swift */,
 			);
 			path = Models;
@@ -333,6 +332,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 88EE50F12A0A41370071F3FA;
 			packageReferences = (
@@ -411,7 +411,6 @@
 				88EE51192A0A429F0071F3FA /* StatisticsViewController.swift in Sources */,
 				885A05CA2A3260AA00A6E681 /* CategoryListViewModel.swift in Sources */,
 				886EDBF82A41D2510010170D /* TrackersFiltersViewController.swift in Sources */,
-				885AF3DC2A123E9B00A4E68F /* TrackerCategory.swift in Sources */,
 				885A05C22A325F2C00A6E681 /* CreateCategoryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +430,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				88EE51042A0A41370071F3FA /* Base */,
+				886EDBF92A4325C10010170D /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -439,6 +439,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				88EE51092A0A413B0071F3FA /* Base */,
+				886EDBFA2A4325C10010170D /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -486,6 +487,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -546,6 +548,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

@@ -10,7 +10,7 @@ import UIKit
 
 class EditCategoryViewController: UIViewController {
     
-    var editableCategory: TrackerCategoryModel?
+    var editableCategory: TrackerCategory?
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()

@@ -53,7 +53,7 @@ class CreateEventViewController: UIViewController {
             updateCreateEventButton()
         }
     }
-    var category: TrackerCategoryModel? = nil {
+    var category: TrackerCategory? = nil {
         didSet {
             updateCreateEventButton()
         }
@@ -73,7 +73,7 @@ class CreateEventViewController: UIViewController {
     private var scheduleSubTitle: String = ""
     private var dayOfWeek: [String] = []
     
-    var selectedCategory: TrackerCategoryModel?
+    var selectedCategory: TrackerCategory?
     var categorySubTitle: String = ""
     
     private lazy var scrollView: UIScrollView = {
@@ -651,7 +651,7 @@ extension CreateEventViewController: ScheduleViewControllerDelegate {
 }
 
 extension CreateEventViewController: CategoryListViewModelDelegate {
-    func createCategory(category: TrackerCategoryModel) {
+    func createCategory(category: TrackerCategory) {
         self.category = category
         let categoryString = category.name
         categorySubTitle = categoryString

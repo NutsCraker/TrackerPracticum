@@ -60,7 +60,7 @@ final class CategoryListView: UIViewController {
         return tableView
     }()
     
-    init(delegate: CategoryListViewModelDelegate?, selectedCategory: TrackerCategoryModel?) {
+    init(delegate: CategoryListViewModelDelegate?, selectedCategory: TrackerCategory?) {
         viewModel = CategoryListViewModel(delegate: delegate, selectedCategory: selectedCategory)
         super.init(nibName: nil, bundle: nil)
         viewModel.onChange = self.tableView.reloadData
@@ -119,7 +119,7 @@ final class CategoryListView: UIViewController {
         present(createCategoryViewController, animated: true)
     }
     
-    private func actionSheet(categoryToDelete: TrackerCategoryModel) {
+    private func actionSheet(categoryToDelete: TrackerCategory) {
         let alert = UIAlertController(title: "Эта категория точно не нужна?",
                                       message: nil,
                                       preferredStyle: .actionSheet)
@@ -225,8 +225,8 @@ extension CategoryListView: UITableViewDelegate {
 }
 
 extension CategoryListView: CreateCategoryViewControllerDelegate {
-    func createdCategory(_ category: TrackerCategoryModel) {
-        viewModel.selectCategory(category)
+    func createdCategory(_ category: TrackerCategory) {
+        //viewModel.selectCategory(with: category)
         viewModel.selectCategory(with: category.name)
     }
 }

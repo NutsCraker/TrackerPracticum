@@ -8,7 +8,7 @@ final class TrackersViewController: UIViewController {
     private let filtersButtonTitle = NSLocalizedString("filters", tableName: "LocalizableString", comment: "Title Trackers")
    
     private var completedTrackers: [TrackerRecord] = []
-    private var visibleCategories: [TrackerCategoryModel] = []
+    private var visibleCategories: [TrackerCategory] = []
     private var pinnedTrackers: [Tracker] = []
     private var currentDate: Int?
     private var searchText: String = ""
@@ -105,7 +105,7 @@ final class TrackersViewController: UIViewController {
         view.backgroundColor = .white
         setDayOfWeek()
         updateCategories(with: trackerCategoryStore.trackerCategories)
-        completedTrackers = trackerRecordStore.trackerRecord
+        completedTrackers = trackerRecordStore.trackerRecords
         makeNavBar()
         addSubviews()
         setupLayoutSearchTextFieldAndButton()
@@ -232,8 +232,8 @@ final class TrackersViewController: UIViewController {
         currentDate = components.weekday
     }
     
-    private func updateCategories(with categories: [TrackerCategoryModel]) {
-        var newCategories: [TrackerCategoryModel] = []
+    private func updateCategories(with categories: [TrackerCategory]) {
+        var newCategories: [TrackerCategory] = []
         var pinnedTrackers: [Tracker] = []
         activityIndicator.startAnimating()
         for category in categories {
@@ -244,7 +244,7 @@ final class TrackersViewController: UIViewController {
                 if let day = currentDate, scheduleInts.contains(day) {
                     if selectedFilter == .completed {
                         if !completedTrackers.contains(where: { record in
-                            record.idTracker == tracker.id &&
+                            record.id == tracker.id &&
                             record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
                         }) {
                             continue
@@ -252,7 +252,7 @@ final class TrackersViewController: UIViewController {
                     }
                     if selectedFilter == .uncompleted {
                         if completedTrackers.contains(where: { record in
-                            record.idTracker == tracker.id &&
+                            record.id == tracker.id &&
                             record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
                         }) {
                             continue
@@ -266,7 +266,7 @@ final class TrackersViewController: UIViewController {
                 }
             }
             if newTrackers.count > 0 {
-                let newCategory = TrackerCategoryModel(name: category.name, trackers: newTrackers)
+                let newCategory = TrackerCategory(name: category.name, trackers: newTrackers)
                 newCategories.append(newCategory)
             }
         }
@@ -446,8 +446,8 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
     func createTracker(
         _ tracker: Tracker, categoryName: String
     ) {
-        var categoryToUpdate: TrackerCategoryModel?
-        let categories: [TrackerCategoryModel] = trackerCategoryStore.trackerCategories
+        var categoryToUpdate: TrackerCategory?
+        let categories: [TrackerCategory] = trackerCategoryStore.trackerCategories
         for i in 0..<categories.count {
             if categories[i].name == categoryName {
                 categoryToUpdate = categories[i]
@@ -456,7 +456,7 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
         if categoryToUpdate != nil {
             try? trackerCategoryStore.addTracker(tracker, to: categoryToUpdate!)
         } else {
-            let newCategory = TrackerCategoryModel(name: categoryName, trackers: [tracker])
+            let newCategory = TrackerCategory(name: categoryName, trackers: [tracker])
             categoryToUpdate = newCategory
             try? trackerCategoryStore.addNewTrackerCategory(categoryToUpdate!)
         }
