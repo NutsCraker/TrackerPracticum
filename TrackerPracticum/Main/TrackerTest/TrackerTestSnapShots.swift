@@ -12,7 +12,7 @@ final class TrackerTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
-    func testTrackersVCLight() {
+    func testTrackersViewControllerLight() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let vc = TabBarViewController.configure()
         window.rootViewController = vc
@@ -24,7 +24,7 @@ final class TrackerTests: XCTestCase {
         assertSnapshot(matching: view, as: .image(traits: .init(userInterfaceStyle: .light)))
     }
     
-    func testTrackersVCDark() {
+    func testTrackersViewControllerDark() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let vc = TabBarViewController.configure()
         window.rootViewController = vc
