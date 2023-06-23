@@ -1,7 +1,6 @@
 import UIKit
 
-final class StatisticsVC: UIViewController {
-    private let colors = Colors()
+final class StatisticsViewController: UIViewController {
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     
@@ -56,7 +55,7 @@ final class StatisticsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = colors.viewBackgroundColor
+        view.backgroundColor = .YPBackground
         
         addTitleStatistics()
         addImageNoStatistics()
@@ -139,7 +138,7 @@ final class StatisticsVC: UIViewController {
     }
 }
 
-extension StatisticsVC: TrackerRecordStoreDelegate {
+extension StatisticsViewController: TrackerRecordStoreDelegate {
     func store(_ store: TrackerRecordStore, didUpdate update: TrackerRecordStoreUpdate) {
         updateCompletedTrackers()
     }
