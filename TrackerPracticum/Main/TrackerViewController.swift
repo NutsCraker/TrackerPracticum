@@ -171,7 +171,7 @@ final class TrackersViewController: UIViewController {
     
     @objc func addTracker() {
         let trackersVC = CreateTrackerViewController()
-        trackersVC.delegate = self
+            //trackersVC.delegate = self
         present(trackersVC, animated: true)
         analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.add_track.rawValue])
         print("Event: add_track")
