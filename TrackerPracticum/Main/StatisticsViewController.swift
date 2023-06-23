@@ -1,24 +1,13 @@
-//
-//  StatisticsViewController.swift
-//  TrackerPracticum
-//
-//  Created by Alexander Farizanov on 09.05.2023.
-//
-
-import UIKit
-
-final class StatisticsViewController: UIViewController {
-    
-}
 import UIKit
 
 final class StatisticsVC: UIViewController {
+    private let colors = Colors()
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     
     private lazy var titleStatistics: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .YPBlack
         label.text = NSLocalizedString("statistics", tableName: "LocalizableString", comment: "statistics")
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +23,7 @@ final class StatisticsVC: UIViewController {
     
     private lazy var titleImageNoStatistics: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .YPBlack
         label.text = "Анализировать пока нечего"
         label.font = .mediumSystemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +38,7 @@ final class StatisticsVC: UIViewController {
     
     private lazy var resultTitle: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .YPBlack
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +47,7 @@ final class StatisticsVC: UIViewController {
     
     private lazy var resultSubTitle: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .YPBlack
         label.font = .mediumSystemFont(ofSize: 12)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +56,7 @@ final class StatisticsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
         
         addTitleStatistics()
         addImageNoStatistics()
@@ -81,7 +70,7 @@ final class StatisticsVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        completedTrackerView.setGradientBorder(width: 1, colors: [.CS01, .CS09, .CS03])
+        completedTrackerView.setGradientBorder(width: 1, colors: [.CS01, .CS02, .CS03])
     }
     
     private func addTitleStatistics() {

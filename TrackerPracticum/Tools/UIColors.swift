@@ -66,7 +66,13 @@ extension String {
         )
     }
 }
-
+final class Colors {
+    var viewBackgroundColor = UIColor.systemBackground
+    var datePickerTintColor = UIColor { (traits) -> UIColor in
+        let isDarkMode = traits.userInterfaceStyle == .dark
+        return isDarkMode ? UIColor.black : UIColor.black
+    }
+}
 public extension UIView {
     
     private static let kLayerNameGradientBorder = "GradientBorderLayer"
