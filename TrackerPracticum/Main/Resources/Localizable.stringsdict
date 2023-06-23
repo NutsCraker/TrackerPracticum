@@ -5,7 +5,7 @@
 	<key>trackerCompleted</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
+		<string>% @trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

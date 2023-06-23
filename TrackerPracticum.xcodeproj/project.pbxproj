@@ -30,11 +30,10 @@
 		8885FFE62A27BF1000F686B2 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8885FFE52A27BF1000F686B2 /* DatabaseManager.swift */; };
 		8885FFE92A27C3D500F686B2 /* TrackerEmojiColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8885FFE82A27C3D500F686B2 /* TrackerEmojiColorView.swift */; };
 		8885FFEB2A27C45F00F686B2 /* TrackerEmojiColorSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8885FFEA2A27C45F00F686B2 /* TrackerEmojiColorSupplementaryView.swift */; };
-		88CF8A542A45812700166DAE /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88CF8A512A45811B00166DAE /* Info.plist */; };
-		88CF8A572A4583B700166DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 88CF8A562A4583B700166DAE /* Localizable.strings */; };
 		88CF8A592A4583E600166DAE /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 88CF8A582A4583E600166DAE /* Localizable.stringsdict */; };
 		88CF8A5C2A458D6E00166DAE /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 88CF8A5B2A458D6E00166DAE /* SnapshotTesting */; };
 		88CF8A5E2A458DED00166DAE /* TrackerTestSnapShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CF8A5D2A458DED00166DAE /* TrackerTestSnapShots.swift */; };
+		88CF8A602A45A5A300166DAE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 88CF8A622A45A5A300166DAE /* Localizable.strings */; };
 		88EE50FE2A0A41370071F3FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EE50FD2A0A41370071F3FA /* AppDelegate.swift */; };
 		88EE51002A0A41370071F3FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EE50FF2A0A41370071F3FA /* SceneDelegate.swift */; };
 		88EE51052A0A41370071F3FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88EE51032A0A41370071F3FA /* Main.storyboard */; };
@@ -85,12 +84,10 @@
 		8885FFE52A27BF1000F686B2 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		8885FFE82A27C3D500F686B2 /* TrackerEmojiColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerEmojiColorView.swift; sourceTree = "<group>"; };
 		8885FFEA2A27C45F00F686B2 /* TrackerEmojiColorSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerEmojiColorSupplementaryView.swift; sourceTree = "<group>"; };
-		88CF8A502A45811B00166DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
-		88CF8A522A45812200166DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
-		88CF8A532A45812500166DAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
-		88CF8A562A4583B700166DAE /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		88CF8A582A4583E600166DAE /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
 		88CF8A5D2A458DED00166DAE /* TrackerTestSnapShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTestSnapShots.swift; sourceTree = "<group>"; };
+		88CF8A612A45A5A300166DAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		88CF8A632A45A5AB00166DAE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		88EE50FA2A0A41370071F3FA /* TrackerPracticum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackerPracticum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88EE50FD2A0A41370071F3FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88EE50FF2A0A41370071F3FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -197,7 +194,7 @@
 		88CF8A552A45819600166DAE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				88CF8A562A4583B700166DAE /* Localizable.strings */,
+				88CF8A622A45A5A300166DAE /* Localizable.strings */,
 				88CF8A582A4583E600166DAE /* Localizable.stringsdict */,
 			);
 			path = Resources;
@@ -230,7 +227,6 @@
 				88EE51032A0A41370071F3FA /* Main.storyboard */,
 				88EE51062A0A413B0071F3FA /* Assets.xcassets */,
 				88EE51082A0A413B0071F3FA /* LaunchScreen.storyboard */,
-				88CF8A512A45811B00166DAE /* Info.plist */,
 			);
 			path = TrackerPracticum;
 			sourceTree = "<group>";
@@ -372,8 +368,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88CF8A572A4583B700166DAE /* Localizable.strings in Resources */,
-				88CF8A542A45812700166DAE /* Info.plist in Resources */,
+				88CF8A602A45A5A300166DAE /* Localizable.strings in Resources */,
 				88EE510A2A0A413B0071F3FA /* LaunchScreen.storyboard in Resources */,
 				88EE51072A0A413B0071F3FA /* Assets.xcassets in Resources */,
 				88EE51052A0A41370071F3FA /* Main.storyboard in Resources */,
@@ -441,14 +436,13 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		88CF8A512A45811B00166DAE /* Info.plist */ = {
+		88CF8A622A45A5A300166DAE /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				88CF8A502A45811B00166DAE /* en */,
-				88CF8A522A45812200166DAE /* ru */,
-				88CF8A532A45812500166DAE /* Base */,
+				88CF8A612A45A5A300166DAE /* en */,
+				88CF8A632A45A5AB00166DAE /* ru */,
 			);
-			name = Info.plist;
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		88EE51032A0A41370071F3FA /* Main.storyboard */ = {
