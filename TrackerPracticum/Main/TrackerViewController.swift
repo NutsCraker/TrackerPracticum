@@ -1,9 +1,11 @@
 import UIKit
 
 final class TrackersViewController: UIViewController {
+    private let analyticsService = AnalyticsService()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
     private let trackerStore = TrackerStore()
+    private let colors = Colors()
     private let titleTrackers = NSLocalizedString("trackersTitle", tableName: "LocalizableString", comment: "Title Trackers")
     private let filtersButtonTitle = NSLocalizedString("filters", tableName: "LocalizableString", comment: "Title Trackers")
     private let stubTitle = NSLocalizedString("stubTitle", tableName: "LocalizableString", comment: "stubTitle")
@@ -27,7 +29,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.color = .gray
+        activityIndicator.color = .YPBlack
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
     }()
@@ -41,18 +43,27 @@ final class TrackersViewController: UIViewController {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
-        label.text = "Что будем отслеживать?"
-//        label.font = .mediumSystemFont(ofSize: 12)
+        label.textColor = .YPBlack
+        label.text = stubTitle
+        label.font = .mediumSystemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var datePicker = UIDatePicker()
+    private lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.backgroundColor = .YPBlack
+        datePicker.layer.cornerRadius = 8
+        datePicker.tintColor = .YPBlack
+        datePicker.overrideUserInterfaceStyle = .light
+        datePicker.layer.masksToBounds = true
+        
+        return datePicker
+    }()
     
     private lazy var searchTextField: UITextField = {
         let searchTextField = UITextField()
-        searchTextField.placeholder = "Поиск"
+        searchTextField.placeholder = search
         searchTextField.textColor = .YPBlack
         searchTextField.font = .systemFont(ofSize: 17)
         searchTextField.backgroundColor = .YPLightGray
@@ -73,7 +84,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var cancelEditingButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(search, for: .normal)
         button.setTitleColor(.YPBlue, for: .normal)
         button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(cancelEditingButtonAction), for: .touchUpInside)
@@ -106,7 +117,9 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        analyticsService.report(event: .open, params: ["Screen" : "Main"])
+        print("Event: open")
+        view.backgroundColor = colors.viewBackgroundColor
         setDayOfWeek()
         updateCategories(with: trackerCategoryStore.trackerCategories)
         completedTrackers = trackerRecordStore.trackerRecords
@@ -119,6 +132,11 @@ final class TrackersViewController: UIViewController {
         trackerRecordStore.delegate = self
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, params: ["Screen" : "Main"])
+        print("Event: close")
+    }
     private func makeNavBar() {
         if let navBar = navigationController?.navigationBar {
             title = titleTrackers
@@ -127,16 +145,17 @@ final class TrackersViewController: UIViewController {
                 target: self,
                 action: #selector(addTracker)
             )
-            leftButton.tintColor = .black
+            leftButton.tintColor = .YPBlack
+            
             navBar.topItem?.setLeftBarButton(leftButton, animated: false)
             datePicker.preferredDatePickerStyle = .compact
             datePicker.datePickerMode = .date
-            datePicker.locale = Locale(identifier: "ru_RU")
             datePicker.accessibilityLabel = dateFormatter.string(from: datePicker.date)
             
             let rightButton = UIBarButtonItem(customView: datePicker)
             datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
             rightButton.accessibilityLabel = dateFormatter.string(from: datePicker.date)
+            rightButton.customView?.tintColor = .YPBlue
             navBar.topItem?.setRightBarButton(rightButton, animated: false)
             navBar.prefersLargeTitles = true
         }
@@ -151,10 +170,12 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc func addTracker() {
-          let trackersView = CreateTrackerViewController()
-                 trackersView.delegate = self
-                 present(trackersView, animated: true)
-      }
+        let trackersVC = CreateTrackerViewController()
+        trackersVC.delegate = self
+        present(trackersVC, animated: true)
+        analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.add_track.rawValue])
+        print("Event: add_track")
+    }
     
     @objc private func cancelEditingButtonAction() {
         searchTextField.text = ""
@@ -164,10 +185,12 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func filtersButtonAction() {
-        let filters = FiltersViewCcontroller()
-        filters.delegate = self
-        filters.selectedFilter = selectedFilter
-        present(filters, animated: true)
+        analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.filter.rawValue])
+        print("Event: filter")
+        let filtersVC = FiltersViewCcontroller()
+        filtersVC.delegate = self
+        filtersVC.selectedFilter = selectedFilter
+        present(filtersVC, animated: true)
     }
     
     private func addSubviews() {
@@ -311,14 +334,18 @@ final class TrackersViewController: UIViewController {
             try? self?.trackerStore.togglePinTracker(tracker)
         }
         let rename = UIAction(title: "Редактировать", image: nil) { [weak self] action in
-            let editTracker = CreateEventViewController(.regular)
-            editTracker.editTracker = tracker
-            editTracker.editTrackerDate = self?.datePicker.date ?? Date()
-            editTracker.category = tracker.category
-            self?.present(editTracker, animated: true)
+            self?.analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.edit.rawValue])
+            print("Event: edit")
+            let editTrackerVC = CreateEventViewController(.regular)
+            editTrackerVC.editTracker = tracker
+            editTrackerVC.editTrackerDate = self?.datePicker.date ?? Date()
+            editTrackerVC.category = tracker.category
+            self?.present(editTrackerVC, animated: true)
         }
         let delete = UIAction(title: "Удалить", image: nil, attributes: .destructive) { [weak self] action in
             self?.actionSheet(trackerToDelete: tracker)
+            self?.analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.delete.rawValue])
+            print("Event: delete")
         }
         return UIMenu(children: [pin, rename, delete])
     }
@@ -445,7 +472,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TrackersViewController: CreateTrackerViewControllerDelegate {
+extension TrackersViewController: CreateEventViewControllerDelegate {
     
     func createTracker(
         _ tracker: Tracker, categoryName: String
@@ -473,9 +500,14 @@ extension TrackersViewController {
     @objc func textFieldChanged() {
         searchText = searchTextField.text ?? ""
         imageView.image = searchText.isEmpty ? UIImage(named: "star") : UIImage(named: "notFound")
-        label.text = searchText.isEmpty ? "Что будем отслеживать?" : "Ничего не найдено"
+        label.text = searchText.isEmpty ? stubTitle : nothingFound
         widthAnchor?.constant = 85
         updateCategories(with: trackerCategoryStore.predicateFetch(nameTracker: searchText))
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
@@ -491,6 +523,8 @@ extension TrackersViewController: TrackersCollectionViewDelegate {
         } else {
             completedTrackers.append(TrackerRecord(id: id, date: datePicker.date))
             try? trackerRecordStore.addNewTrackerRecord(TrackerRecord(id: id, date: datePicker.date))
+            analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.track.rawValue])
+            print("Event: track")
         }
         updateCategories(with: trackerCategoryStore.trackerCategories)
     }
@@ -576,4 +610,17 @@ extension TrackersViewController: FiltersViewControllerDelegate {
             updateCategories(with: trackerCategoryStore.trackerCategories)
         }
     }
+}
+
+extension UIDatePicker {
+
+    var textColor: UIColor? {
+        set {
+            setValue(newValue, forKeyPath: "textColor")
+        }
+        get {
+            return value(forKeyPath: "textColor") as? UIColor
+        }
+    }
+
 }
