@@ -6,6 +6,10 @@ final class TrackersViewController: UIViewController {
     private let trackerStore = TrackerStore()
     private let titleTrackers = NSLocalizedString("trackersTitle", tableName: "LocalizableString", comment: "Title Trackers")
     private let filtersButtonTitle = NSLocalizedString("filters", tableName: "LocalizableString", comment: "Title Trackers")
+    private let stubTitle = NSLocalizedString("stubTitle", tableName: "LocalizableString", comment: "stubTitle")
+    private let nothingFound = NSLocalizedString("nothingFound", tableName: "LocalizableString", comment: "nothingFound")
+    private let search = NSLocalizedString("search", tableName: "LocalizableString", comment: "search")
+    private let cancel = NSLocalizedString("cancel", tableName: "LocalizableString", comment: "cancel")
    
     private var completedTrackers: [TrackerRecord] = []
     private var visibleCategories: [TrackerCategory] = []
