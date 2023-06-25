@@ -374,7 +374,7 @@ final class CreateEventViewController: UIViewController {
         }
         
         if createEventButton.isEnabled {
-            createEventButton.backgroundColor = .ypBackgroundColor
+            createEventButton.backgroundColor = .ypBlack
         } else {
             createEventButton.backgroundColor = .ypBackgroundColor
         }

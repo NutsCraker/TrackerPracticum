@@ -66,7 +66,7 @@ final class TrackersViewController: UIViewController {
         searchTextField.placeholder = search
         searchTextField.textColor = .ypBlack
         searchTextField.font = .systemFont(ofSize: 17)
-        searchTextField.backgroundColor = .yplightGray
+        searchTextField.backgroundColor = .ypSearchColor
         searchTextField.layer.cornerRadius = 10
         searchTextField.indent(size: 30)
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
