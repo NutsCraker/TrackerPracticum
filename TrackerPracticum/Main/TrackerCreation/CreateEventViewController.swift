@@ -508,7 +508,7 @@ final class CreateEventViewController: UIViewController {
             categoryButton.leadingAnchor.constraint(equalTo: createEventView.leadingAnchor),
             
             forwardCategory.trailingAnchor.constraint(equalTo: categoryButton.trailingAnchor, constant: -24),
-            forwardSchedule.centerYAnchor.constraint(equalTo: categoryButton.centerYAnchor),
+            forwardCategory.centerYAnchor.constraint(equalTo: categoryButton.centerYAnchor),
             
             emojiAndColorCollectionView.topAnchor.constraint(equalTo: createEventView.bottomAnchor, constant: 22),
             emojiAndColorCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),

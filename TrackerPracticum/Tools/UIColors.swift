@@ -13,7 +13,7 @@ extension UIColor {
     static let ypSwitchColor = UIColor(named: "switchColor") ?? UIColor.blue
     static let ypGradient01 = UIColor(named: "gradientColor1") ?? UIColor.red
     static let ypGradient02 = UIColor(named: "gradientColor2") ?? UIColor.green
-    static let ypFradient03 = UIColor(named: "gradientColor3") ?? UIColor.blue
+    static let ypGradient03 = UIColor(named: "gradientColor3") ?? UIColor.blue
     static let ypDatePicker = UIColor(named: "datePickerColor") ?? UIColor.gray
     static let ypDatePickerTint = UIColor(named: "datePickerTintColor") ?? UIColor.black
     static let ypSearchColor = UIColor(named: "searchTextFieldColor") ?? UIColor.gray

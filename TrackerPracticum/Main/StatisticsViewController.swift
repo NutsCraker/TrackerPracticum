@@ -1,6 +1,7 @@
 import UIKit
 
 final class StatisticsViewController: UIViewController {
+    private let colors = Colors()
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     
@@ -55,7 +56,7 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .ypBackgroundColor
+        view.backgroundColor = colors.viewBackgroundColor
         
         addTitleStatistics()
         addImageNoStatistics()
@@ -69,7 +70,7 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        completedTrackerView.setGradientBorder(width: 1, colors: [.CS01, .CS02, .CS03])
+        completedTrackerView.setGradientBorder(width: 1, colors: [.ypGradient01, .ypGradient02, .ypGradient03])
     }
     
     private func addTitleStatistics() {
