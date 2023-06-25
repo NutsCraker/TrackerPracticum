@@ -1,0 +1,6 @@
+framework module Pods_TrackerPracticum {
+  umbrella header "Pods-TrackerPracticum-umbrella.h"
+
+  export *
+  module * { export * }
+}
