@@ -703,12 +703,15 @@ extension CreateEventViewController: UICollectionViewDelegate {
         let cell = collectionView.cellForItem(at: indexPath) as? TrackerEmojiColorView
         if section == 0 {
             if selectedEmojiCell != nil {
+
                 collectionView.deselectItem(at: selectedEmojiCell!, animated: true)
-                collectionView.cellForItem(at: selectedEmojiCell!)?.backgroundColor = .ypBlack
+                collectionView.cellForItem(at: selectedEmojiCell!)?.backgroundColor = .ypWhite
             }
             cell?.backgroundColor = .yplightGray
             selectedEmoji = cell?.emojiLabel.text ?? ""
             selectedEmojiCell = indexPath
+
+            
         } else if section == 1 {
             if selectedColorCell != nil {
                 collectionView.deselectItem(at: selectedColorCell!, animated: true)

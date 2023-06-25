@@ -47,7 +47,7 @@ final class TrackersCollectionView: UICollectionViewCell {
     
     private lazy var trackerNameLabel: UILabel = {
         let trackerNameLabel = UILabel()
-//        trackerNameLabel.font = .mediumSystemFont(ofSize: 12)
+        trackerNameLabel.font = .mediumSystemFont(ofSize: 12)
         trackerNameLabel.numberOfLines = 2
         trackerNameLabel.text = "Название трекера "
         trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false

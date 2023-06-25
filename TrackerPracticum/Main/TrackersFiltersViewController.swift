@@ -12,7 +12,7 @@ final class FiltersViewCcontroller: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Фильтры"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -22,7 +22,7 @@ final class FiltersViewCcontroller: UIViewController {
         let tableView = UITableView()
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.identifier)
         tableView.separatorColor = .ypGray
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .ypWhite
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsMultipleSelection = false
@@ -32,7 +32,7 @@ final class FiltersViewCcontroller: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         addSubviews()
         setupLayout()
     }
