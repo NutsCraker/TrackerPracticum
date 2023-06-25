@@ -182,7 +182,7 @@ final class CreateEventViewController: UIViewController {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .ypGray
+        view.backgroundColor = .ypBackgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -276,7 +276,7 @@ final class CreateEventViewController: UIViewController {
         var titleButton = editTracker == nil ? "Создать" : "Сохранить"
         button.setTitleColor(.ypWhite, for: .normal)
         button.setTitle(titleButton, for: .normal)
-        button.backgroundColor = .gray
+        button.backgroundColor = .ypBackgroundColor
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(createEventButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -320,7 +320,7 @@ final class CreateEventViewController: UIViewController {
         
         guard let indexPathEmoji = emojies.firstIndex(where: {$0 == selectedEmoji}) else { return }
         let cellEmoji = self.emojiAndColorCollectionView.cellForItem(at: IndexPath(row: indexPathEmoji, section: 0))
-        cellEmoji?.backgroundColor = .lightGray
+        cellEmoji?.backgroundColor = .yplightGray
         selectedEmojiCell = IndexPath(row: indexPathEmoji, section: 0)
         
         guard let indexPathColor = colorsArray.firstIndex(where: {$0.hexString == selectedColor?.hexString}) else { return }
@@ -374,9 +374,9 @@ final class CreateEventViewController: UIViewController {
         }
         
         if createEventButton.isEnabled {
-            createEventButton.backgroundColor = .ypBlack
+            createEventButton.backgroundColor = .ypBackgroundColor
         } else {
-            createEventButton.backgroundColor = .gray
+            createEventButton.backgroundColor = .ypBackgroundColor
         }
     }
     
@@ -704,7 +704,7 @@ extension CreateEventViewController: UICollectionViewDelegate {
         if section == 0 {
             if selectedEmojiCell != nil {
                 collectionView.deselectItem(at: selectedEmojiCell!, animated: true)
-                collectionView.cellForItem(at: selectedEmojiCell!)?.backgroundColor = .white
+                collectionView.cellForItem(at: selectedEmojiCell!)?.backgroundColor = .ypBlack
             }
             cell?.backgroundColor = .yplightGray
             selectedEmoji = cell?.emojiLabel.text ?? ""
@@ -725,7 +725,7 @@ extension CreateEventViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as? TrackerEmojiColorView
         collectionView.deselectItem(at: indexPath, animated: true)
-        cell?.backgroundColor = .white
+        cell?.backgroundColor = .ypWhite
         cell?.layer.borderWidth = 0
         if indexPath.section == 0 {
             selectedEmoji = ""

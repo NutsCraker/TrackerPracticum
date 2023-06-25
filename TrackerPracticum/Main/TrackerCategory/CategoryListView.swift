@@ -1,20 +1,14 @@
-//
-//  CategoryListView.swift
-//  TrackerPracticum
-//
-//  Created by Alexander Farizanov on 08.06.2023.
-//
-
 import UIKit
 
 final class CategoryListView: UIViewController {
     private let viewModel: CategoryListViewModel
+    private let colors = Colors()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Категория"
-        label.font = .systemFont(ofSize: 16)
+        label.font = UIFont.mediumSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -28,11 +22,11 @@ final class CategoryListView: UIViewController {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Привычки и события можно объединять по смыслу"
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 12)
+        label.font = UIFont.mediumSystemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -40,7 +34,7 @@ final class CategoryListView: UIViewController {
     private lazy var addCategoryButton: UIButton = {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.ypWhite, for: .normal)
         button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(addCategoryButtonAction), for: .touchUpInside)
@@ -52,7 +46,7 @@ final class CategoryListView: UIViewController {
         let tableView = UITableView()
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.identifier)
         tableView.separatorColor = .ypGray
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .ypWhite
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsMultipleSelection = false
@@ -72,7 +66,7 @@ final class CategoryListView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
         addSubviews()
         setupLayout()
     }
@@ -114,9 +108,9 @@ final class CategoryListView: UIViewController {
     
     @objc
     private func addCategoryButtonAction() {
-        let createCategoryViewController = CreateCategoryViewController()
-        createCategoryViewController.delegate = self
-        present(createCategoryViewController, animated: true)
+        let createCategoryVC = CreateCategoryViewController()
+        createCategoryVC.delegate = self
+        present(createCategoryVC, animated: true)
     }
     
     private func actionSheet(categoryToDelete: TrackerCategory) {
@@ -138,9 +132,9 @@ final class CategoryListView: UIViewController {
     func makeContextMenu(_ indexPath: IndexPath) -> UIMenu {
         let category = viewModel.categories[indexPath.row]
         let rename = UIAction(title: "Редактировать", image: nil) { [weak self] action in
-            let editCategory = EditCategoryViewController()
-            editCategory.editableCategory = category
-            self?.present(editCategory, animated: true)
+            let editCategoryVC = EditCategoryViewController()
+            editCategoryVC.editableCategory = category
+            self?.present(editCategoryVC, animated: true)
         }
         let delete = UIAction(title: "Удалить", image: nil, attributes: .destructive) { [weak self] action in
             self?.actionSheet(categoryToDelete: category)
@@ -195,6 +189,9 @@ extension CategoryListView: UITableViewDataSource {
             categoryCell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             categoryCell.contentView.layer.cornerRadius = 0
         }
+        if viewModel.categories.count == 1 {
+            categoryCell.contentView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        }
         categoryCell.checkmarkImage.isHidden = viewModel.selectedCategory?.name != categoryName
         categoryCell.selectionStyle = .none
         return categoryCell
@@ -226,8 +223,7 @@ extension CategoryListView: UITableViewDelegate {
 
 extension CategoryListView: CreateCategoryViewControllerDelegate {
     func createdCategory(_ category: TrackerCategory) {
-        //viewModel.selectCategory(with: category)
+        viewModel.selectCategory(category)
         viewModel.selectCategory(with: category.name)
     }
 }
-
