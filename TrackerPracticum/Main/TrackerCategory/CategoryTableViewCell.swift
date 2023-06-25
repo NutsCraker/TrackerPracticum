@@ -21,7 +21,7 @@ final class CategoryTableViewCell: UITableViewCell {
     
     lazy var view: UIView = {
        let view = UIView()
-        view.backgroundColor = .YPBackground
+        view.backgroundColor = .ypBackgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
        return view
     }()

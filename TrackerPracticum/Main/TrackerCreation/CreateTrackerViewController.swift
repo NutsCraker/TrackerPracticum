@@ -1,10 +1,3 @@
-//
-//  CreateTracker.swift
-//  TrackerPracticum
-//
-//  Created by Alexander Farizanov on 09.05.2023.
-//
-
 import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
@@ -12,14 +5,14 @@ protocol CreateTrackerViewControllerDelegate: AnyObject {
 }
 
 final class CreateTrackerViewController: UIViewController {
-   
+    private let colors = Colors()
     public weak var delegate: CreateTrackerViewControllerDelegate?
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Создание трекера"
-        label.font = .systemFont(ofSize: 16)
+        label.font = UIFont.mediumSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -27,7 +20,8 @@ final class CreateTrackerViewController: UIViewController {
     private lazy var createRegularEventButton: UIButton = {
         let button = UIButton()
         button.setTitle("Привычка", for: .normal)
-        button.backgroundColor = .YPBlack
+        button.backgroundColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(regularEventButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +31,8 @@ final class CreateTrackerViewController: UIViewController {
     private lazy var createIrregularEventButton: UIButton = {
         let button = UIButton()
         button.setTitle("Нерегулярное событие", for: .normal)
-        button.backgroundColor = .YPBlack
+        button.backgroundColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(irregularEventButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +41,7 @@ final class CreateTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
         addSubviews()
         setupLayout()
     }
@@ -90,7 +85,6 @@ final class CreateTrackerViewController: UIViewController {
 }
 
 extension CreateTrackerViewController: CreateEventViewControllerDelegate {
-    
     func createTracker(_ tracker: Tracker, categoryName: String) {
         delegate?.createTracker(tracker, categoryName: categoryName)
     }

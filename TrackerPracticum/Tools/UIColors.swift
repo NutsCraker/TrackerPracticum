@@ -9,17 +9,20 @@ import UIKit
 
 extension UIColor {
     
-    static var YPBlack = hexStringToUIColor(hex:"#1A1B22")
-    static var YPBlackNight = hexStringToUIColor(hex:"#FFFFFF")
-    static var YPWhite = hexStringToUIColor(hex:"#FFFFFF")
-    static var YPWhiteNight = hexStringToUIColor(hex:"#1A1B22")
-    static var YPBlue = hexStringToUIColor(hex:"#3772E7")
-    static var YPRed = hexStringToUIColor(hex:"#F56B6C")
-    static var YPGray = hexStringToUIColor(hex:"#AEAFB4")
-    static var YPLightGray = hexStringToUIColor(hex:"#E6E8EB")
-    static var YPBackground = hexStringToUIColor(hex:"E6E8EB")
-    static var YPBackgroundNight = hexStringToUIColor(hex:"#414141")
-    static var YPSelected = hexStringToUIColor(hex:"#E6E8EB")
+    static let ypBackgroundColor = UIColor(named: "backgroundColor") ?? UIColor.red
+    static let ypSwitchColor = UIColor(named: "switchColor") ?? UIColor.blue
+    static let ypGradient01 = UIColor(named: "gradientColor1") ?? UIColor.red
+    static let ypGradient02 = UIColor(named: "gradientColor2") ?? UIColor.green
+    static let ypFradient03 = UIColor(named: "gradientColor3") ?? UIColor.blue
+    static let ypDatePicker = UIColor(named: "datePickerColor") ?? UIColor.gray
+    static let ypDatePickerTint = UIColor(named: "datePickerTintColor") ?? UIColor.black
+    static let ypSearchColor = UIColor(named: "searchTextFieldColor") ?? UIColor.gray
+    static let ypGray = UIColor(named: "ypGray") ?? UIColor.gray
+    static let ypWhite = UIColor(named: "ypWhite") ?? UIColor.white
+    static let ypRed = UIColor(named: "ypRed") ?? UIColor.red
+    static let ypBlack = UIColor(named: "ypBlack") ?? UIColor.black
+    static let yplightGray = UIColor(named: "lightGray") ?? UIColor.gray
+    static let ypBlue = UIColor(named: "ypBlue") ?? UIColor.blue
     
     static var CS01 = hexStringToUIColor(hex:"#FD4C49")
     static var CS02 = hexStringToUIColor(hex:"#FF881E")

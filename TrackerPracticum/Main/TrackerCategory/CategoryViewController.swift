@@ -40,7 +40,7 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.textColor = .white
-        button.backgroundColor = .YPBlack
+        button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(addCategoryButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -53,8 +53,8 @@ final class CategoryViewController: UIViewController {
         var height = 75
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.identifier)
         tableView.layer.cornerRadius = 16
-        tableView.separatorColor = .YPLightGray
-        tableView.backgroundColor = .YPBackground
+        tableView.separatorColor = .yplightGray
+        tableView.backgroundColor = .ypBackgroundColor
         tableView.frame = CGRect(x: 16, y: 79, width: Int(width), height: height)
         tableView.dataSource = self
         tableView.delegate = self
@@ -120,7 +120,7 @@ extension CategoryViewController: UITableViewDataSource {
         guard let categoryCell = tableView.dequeueReusableCell(withIdentifier: CategoryTableViewCell.identifier) as? CategoryTableViewCell else {
             return UITableViewCell()
         }
-        categoryCell.contentView.backgroundColor = .YPBackground
+        categoryCell.contentView.backgroundColor = .ypBackgroundColor
         categoryCell.label.text = "Важное"
         
         if indexPath.row == 0 {
@@ -128,7 +128,7 @@ extension CategoryViewController: UITableViewDataSource {
         } else {
             categoryCell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
-        categoryCell.backgroundColor = .YPBackground
+        categoryCell.backgroundColor = .ypBackgroundColor
         return categoryCell
     }
 }

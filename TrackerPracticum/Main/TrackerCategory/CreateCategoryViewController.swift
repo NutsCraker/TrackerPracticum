@@ -28,8 +28,8 @@ class CreateCategoryViewController: UIViewController {
         let textField = UITextField()
         textField.indent(size: 10)
         textField.placeholder = "Введите название категории"
-        textField.textColor = .YPBlack
-        textField.backgroundColor = .YPBackground
+        textField.textColor = .ypBlack
+        textField.backgroundColor = .ypBackgroundColor
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17)
         textField.translatesAutoresizingMaskIntoConstraints = false

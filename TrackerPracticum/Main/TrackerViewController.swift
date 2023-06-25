@@ -29,7 +29,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.color = .YPBlack
+        activityIndicator.color = .ypBlack
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
     }()
@@ -43,7 +43,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .YPBlack
+        label.textColor = .ypBlack
         label.text = stubTitle
         label.font = .mediumSystemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -52,9 +52,9 @@ final class TrackersViewController: UIViewController {
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
-        datePicker.backgroundColor = .YPBlack
+        datePicker.backgroundColor = .ypDatePicker
         datePicker.layer.cornerRadius = 8
-        datePicker.tintColor = .YPBlack
+        datePicker.tintColor = .ypDatePickerTint
         datePicker.overrideUserInterfaceStyle = .light
         datePicker.layer.masksToBounds = true
         
@@ -64,9 +64,9 @@ final class TrackersViewController: UIViewController {
     private lazy var searchTextField: UITextField = {
         let searchTextField = UITextField()
         searchTextField.placeholder = search
-        searchTextField.textColor = .YPBlack
+        searchTextField.textColor = .ypBlack
         searchTextField.font = .systemFont(ofSize: 17)
-        searchTextField.backgroundColor = .YPLightGray
+        searchTextField.backgroundColor = .yplightGray
         searchTextField.layer.cornerRadius = 10
         searchTextField.indent(size: 30)
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +85,7 @@ final class TrackersViewController: UIViewController {
     private lazy var cancelEditingButton: UIButton = {
         let button = UIButton()
         button.setTitle(search, for: .normal)
-        button.setTitleColor(.YPBlue, for: .normal)
+        button.setTitleColor(.ypBlue, for: .normal)
         button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(cancelEditingButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -95,7 +95,7 @@ final class TrackersViewController: UIViewController {
     private lazy var filtersButton: UIButton = {
         let button = UIButton()
         button.setTitle(filtersButtonTitle, for: .normal)
-        button.backgroundColor = .YPBlue
+        button.backgroundColor = .ypBlue
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17.0, weight: .regular)
         button.layer.cornerRadius = 16
@@ -135,7 +135,6 @@ final class TrackersViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         analyticsService.report(event: .close, params: ["Screen" : "Main"])
-        print("Event: close")
     }
     private func makeNavBar() {
         if let navBar = navigationController?.navigationBar {
@@ -145,7 +144,7 @@ final class TrackersViewController: UIViewController {
                 target: self,
                 action: #selector(addTracker)
             )
-            leftButton.tintColor = .YPBlack
+            leftButton.tintColor = .ypBlack
             
             navBar.topItem?.setLeftBarButton(leftButton, animated: false)
             datePicker.preferredDatePickerStyle = .compact
@@ -155,7 +154,7 @@ final class TrackersViewController: UIViewController {
             let rightButton = UIBarButtonItem(customView: datePicker)
             datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
             rightButton.accessibilityLabel = dateFormatter.string(from: datePicker.date)
-            rightButton.customView?.tintColor = .YPBlue
+            rightButton.customView?.tintColor = .ypBlue
             navBar.topItem?.setRightBarButton(rightButton, animated: false)
             navBar.prefersLargeTitles = true
         }
@@ -171,10 +170,10 @@ final class TrackersViewController: UIViewController {
     
     @objc func addTracker() {
         let trackersVC = CreateTrackerViewController()
-            //trackersVC.delegate = self
+            trackersVC.delegate = self
         present(trackersVC, animated: true)
-        analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.add_track.rawValue])
-        print("Event: add_track")
+        analyticsService.report(event: .click, params: ["Screen" : "Main", "Item" : Items.add_track .rawValue])
+        
     }
     
     @objc private func cancelEditingButtonAction() {
@@ -395,7 +394,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         cell.configure(
             tracker.id,
             name: tracker.name,
-            color: tracker.color ?? .YPBlue,
+            color: tracker.color ?? .ypBlue,
             emoji: tracker.emoji ?? "",
             isCompleted: isCompleted,
             isEnabled: isEnabled,
@@ -472,7 +471,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TrackersViewController: CreateEventViewControllerDelegate {
+extension TrackersViewController: CreateTrackerViewControllerDelegate {
     
     func createTracker(
         _ tracker: Tracker, categoryName: String

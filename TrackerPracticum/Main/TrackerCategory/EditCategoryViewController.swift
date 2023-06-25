@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class EditCategoryViewController: UIViewController {
+final class EditCategoryViewController: UIViewController {
     
     var editableCategory: TrackerCategory?
     
@@ -23,8 +23,8 @@ class EditCategoryViewController: UIViewController {
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.textColor = .YPBlack
-        textField.backgroundColor = .YPBackground
+        textField.textColor = .ypBlack
+        textField.backgroundColor = .ypBackgroundColor
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17)
         textField.translatesAutoresizingMaskIntoConstraints = false

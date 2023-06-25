@@ -6,7 +6,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var titleStatistics: UILabel = {
         let label = UILabel()
-        label.textColor = .YPBlack
+        label.textColor = .ypBlack
         label.text = NSLocalizedString("statistics", tableName: "LocalizableString", comment: "statistics")
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +22,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var titleImageNoStatistics: UILabel = {
         let label = UILabel()
-        label.textColor = .YPBlack
+        label.textColor = .ypBlack
         label.text = "Анализировать пока нечего"
         label.font = .mediumSystemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var resultTitle: UILabel = {
         let label = UILabel()
-        label.textColor = .YPBlack
+        label.textColor = .ypBlack
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +46,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var resultSubTitle: UILabel = {
         let label = UILabel()
-        label.textColor = .YPBlack
+        label.textColor = .ypBlack
         label.font = .mediumSystemFont(ofSize: 12)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -55,7 +55,7 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .YPBackground
+        view.backgroundColor = .ypBackgroundColor
         
         addTitleStatistics()
         addImageNoStatistics()

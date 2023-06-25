@@ -41,7 +41,7 @@ final class CategoryListView: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.textColor = .white
-        button.backgroundColor = .YPBlack
+        button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(addCategoryButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +51,7 @@ final class CategoryListView: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.identifier)
-        tableView.separatorColor = .YPGray
+        tableView.separatorColor = .ypGray
         tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self

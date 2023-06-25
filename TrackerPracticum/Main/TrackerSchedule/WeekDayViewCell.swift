@@ -1,10 +1,3 @@
-//
-//  WeekDayTableViewCell.swift
-//  TrackerPracticum
-//
-//  Created by Alexander Farizanov on 29.05.2023.
-//
-
 import UIKit
 
 protocol WeekDayViewCellDelegate: AnyObject {
@@ -17,7 +10,7 @@ final class WeekDayViewCell: UITableViewCell {
     
     lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.font = .systemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -25,7 +18,7 @@ final class WeekDayViewCell: UITableViewCell {
     
     lazy var switchCell: UISwitch = {
         let switchCell = UISwitch()
-        switchCell.onTintColor = .YPBlue
+        switchCell.onTintColor = .ypSwitchColor
         switchCell.addTarget(self, action: #selector(onSwitchValueChanged(_:)), for: .valueChanged)
         switchCell.translatesAutoresizingMaskIntoConstraints = false
         return switchCell
@@ -63,4 +56,3 @@ final class WeekDayViewCell: UITableViewCell {
         delegate?.stateChanged(for: weekDay, isOn: control.isOn)
     }
 }
-    

@@ -21,7 +21,7 @@ final class FiltersViewCcontroller: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.identifier)
-        tableView.separatorColor = .YPGray
+        tableView.separatorColor = .ypGray
         tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
